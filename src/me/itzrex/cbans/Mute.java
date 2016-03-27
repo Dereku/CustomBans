@@ -105,7 +105,7 @@ public class Mute implements CommandExecutor {
 				
 			} catch (NullPointerException e2){
 				if(CustomBans.dplayers.getBoolean(args[0])){
-					sender.sendMessage(prefix + "§7Игрок защищён от мута.");
+					sender.sendMessage(prefix + "§7Игрок защищён от бана.");
 					return true;
 				}
 				sender.sendMessage(prefix + "§7Игрок не найден, блокировка в оффлайн.");

@@ -53,7 +53,7 @@ public class TempMute implements CommandExecutor {
 			            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
 			            CustomBans.dconfig2.set(String.valueOf(target.getName().toLowerCase()) + ".mutes-time", currentMin);
 						try {
-							CustomBans.dconfig2.save(CustomBans.dataFile2);
+							CustomBans.dconfig2.save(CustomBans.dataFile);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -85,7 +85,7 @@ public class TempMute implements CommandExecutor {
 			            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
 			            CustomBans.dconfig2.set(String.valueOf(args[0].toLowerCase()) + ".mutes-time", currentMin);
 						try {
-							CustomBans.dconfig2.save(CustomBans.dataFile2);
+							CustomBans.dconfig2.save(CustomBans.dataFile);
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
@@ -108,8 +108,8 @@ public class TempMute implements CommandExecutor {
 				for(Player pl : Bukkit.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", target.getName()).replace("%reason%", reason)).replace("%time%", args[1]));
 					List<String> mutelist = (List<String>) CustomBans.dconfig2.getStringList("mutelist");
-					if(!mutelist.contains(target.getName().toLowerCase())){
-						mutelist.add(target.getName().toLowerCase());
+					if(!mutelist.contains(target.getName())){
+						mutelist.add(target.getName());
 					CustomBans.dconfig2.set("mutelist", mutelist);
 					CustomBans.dconfig2.set(target.getName().toLowerCase() + ".mutedby", p.getName());
 					CustomBans.dconfig2.set(target.getName().toLowerCase() + ".reason", reason);
@@ -121,7 +121,7 @@ public class TempMute implements CommandExecutor {
 		            Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
 		            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
 		            CustomBans.dconfig2.set(String.valueOf(args[0].toLowerCase()) + ".mutes-time", currentMin);
-		            CustomBans.dconfig2.save(CustomBans.dataFile2);
+		            CustomBans.dconfig2.save(CustomBans.dataFile);
 					return true;
 				}
 			}
@@ -149,7 +149,7 @@ public class TempMute implements CommandExecutor {
 		            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
 		            CustomBans.dconfig2.set(String.valueOf(args[0].toLowerCase()) + ".mutes-time", currentMin);
 		            try {
-						CustomBans.dconfig2.save(CustomBans.dataFile2);
+						CustomBans.dconfig2.save(CustomBans.dataFile);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

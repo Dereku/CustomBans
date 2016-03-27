@@ -25,7 +25,7 @@ public class PlayerListener implements Listener {
 			return;
 		}
 		if(banlist.contains(p.getName().toLowerCase())){
-			if(CustomBans.dconfig.getBoolean(p.getName().toLowerCase() + ".permament")){
+			if(CustomBans.dconfig.getBoolean(p.getName() + ".permament")){
 				String reason = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".reason");
 				String time = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".time");
 				String bannedby = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".bannedby");
@@ -68,7 +68,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onChat(final AsyncPlayerChatEvent e) {
         if (CustomBans.dconfig2.getStringList("mutelist").contains(e.getPlayer().getName().toLowerCase())) {
-            final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permament");
+            final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permanent");
             if (permanent) {
                 e.getPlayer().sendMessage(ChatColor.RED + "Вы не можете писать в чат, так как он отключён для вас.");
                 e.getPlayer().sendMessage("Ваш чат заблокировал:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
@@ -114,13 +114,16 @@ public class PlayerListener implements Listener {
     }
     @EventHandler
     public void onCommandWhileMuted(final PlayerCommandPreprocessEvent e) {
+        Bukkit.getScheduler().runTaskAsynchronously((Plugin)this, (Runnable)new Runnable() {
+            @Override
+            public void run() {
                 if (CustomBans.dconfig2.getStringList("mutelist").contains(e.getPlayer().getName().toLowerCase())) {
                     final String message = e.getMessage();
                     final String[] split = message.split(" ");
                     if (!CustomBans.geInstance().getConfig().getStringList("mute-commands").contains(split[0])) {
                         return;
                     }
-                    final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permament");
+                    final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permanent");
                     if (permanent) {
                         e.getPlayer().sendMessage(ChatColor.RED + "Вы не можете писать в чат, так как он отключён для вас.");
                         e.getPlayer().sendMessage("Ваш чат заблокировал:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
@@ -163,6 +166,8 @@ public class PlayerListener implements Listener {
                         }
                     }
                 }
+            }
+        });
     }
     
     
