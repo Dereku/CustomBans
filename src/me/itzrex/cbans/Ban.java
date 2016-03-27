@@ -6,12 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.mysql.jdbc.StringUtils;
 
 public class Ban implements CommandExecutor {
 
@@ -38,13 +41,13 @@ public class Ban implements CommandExecutor {
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "Не указана")));
 						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана")));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
-						if(!banlist.contains(target.getName().toLowerCase())){
-							banlist.add(target.getName().toLowerCase());
+						if(!banlist.contains(target.getName())){
+							banlist.add(target.getName());
 						CustomBans.dconfig.set("banlist", banlist);
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", "Не указана");
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".time", getDateTime());
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".permament", true);
+						CustomBans.dconfig.set(target.getName() + ".bannedby", p.getName());
+						CustomBans.dconfig.set(target.getName() + ".reason", "Не указана");
+						CustomBans.dconfig.set(target.getName() + ".time", getDateTime());
+						CustomBans.dconfig.set(target.getName() + ".permament", true);
 						CustomBans.dconfig.save(CustomBans.dataFile);
 						return true;
 					}
@@ -59,13 +62,13 @@ public class Ban implements CommandExecutor {
 					for(Player pl : Bukkit.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", "Не указана")));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
-						if(!banlist.contains(args[0].toLowerCase())){
-							banlist.add(args[0].toLowerCase());
+						if(!banlist.contains(args[0])){
+							banlist.add(args[0]);
 						CustomBans.dconfig.set("banlist", banlist);
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".bannedby", p.getName());
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".reason", "Не указана");
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".time", getDateTime());
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".permament", true);
+						CustomBans.dconfig.set(args[0] + ".bannedby", p.getName());
+						CustomBans.dconfig.set(args[0] + ".reason", "Не указана");
+						CustomBans.dconfig.set(args[0] + ".time", getDateTime());
+						CustomBans.dconfig.set(args[0] + ".permament", true);
 						try {
 							CustomBans.dconfig.save(CustomBans.dataFile);
 						} catch (IOException e1) {
@@ -93,13 +96,13 @@ public class Ban implements CommandExecutor {
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", reason)));
 					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", reason)));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
-					if(!banlist.contains(target.getName().toLowerCase())){
-						banlist.add(target.getName().toLowerCase());
+					if(!banlist.contains(target.getName())){
+						banlist.add(target.getName());
 					CustomBans.dconfig.set("banlist", banlist);
-					CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
-					CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", reason);
-					CustomBans.dconfig.set(target.getName().toLowerCase() + ".time", getDateTime());
-					CustomBans.dconfig.set(target.getName().toLowerCase() + ".permament", true);
+					CustomBans.dconfig.set(target.getName() + ".bannedby", p.getName());
+					CustomBans.dconfig.set(target.getName() + ".reason", reason);
+					CustomBans.dconfig.set(target.getName() + ".time", getDateTime());
+					CustomBans.dconfig.set(target.getName() + ".permament", true);
 					CustomBans.dconfig.save(CustomBans.dataFile);
 					return true;
 				}
@@ -114,13 +117,13 @@ public class Ban implements CommandExecutor {
 				for(Player pl : Bukkit.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
-					if(!banlist.contains(args[0].toLowerCase())){
-						banlist.add(args[0].toLowerCase());
+					if(!banlist.contains(args[0])){
+						banlist.add(args[0]);
 					CustomBans.dconfig.set("banlist", banlist);
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".bannedby", p.getName());
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".reason", reason);
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".time", getDateTime());
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".permament", true);
+					CustomBans.dconfig.set(args[0] + ".bannedby", p.getName());
+					CustomBans.dconfig.set(args[0] + ".reason", reason);
+					CustomBans.dconfig.set(args[0] + ".time", getDateTime());
+					CustomBans.dconfig.set(args[0] + ".permament", true);
 					try {
 						CustomBans.dconfig.save(CustomBans.dataFile);
 					} catch (IOException e) {
