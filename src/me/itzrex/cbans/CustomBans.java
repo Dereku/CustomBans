@@ -31,7 +31,6 @@ public class CustomBans extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		try {
 		plugin = this;
 		configInit();
 		createFiles();
@@ -47,20 +46,7 @@ public class CustomBans extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 		getLogger().info("CustomBans v" + getDescription().getVersion() + " enabled!");
 		getLogger().info("Bans data loaded. (" + dconfig.getStringList("banlist").size() + ")");
-		} catch(NullPointerException e){
-			createFiles();
-		      dataFile = new File(getDataFolder(), "bans.yml");
-		      dconfig = YamlConfiguration.loadConfiguration(dataFile);
-			
-		}
-		try {
 		getLogger().info("Mutes data loaded. (" + dconfig2.getStringList("mutelist").size() + ")");
-		} catch(NullPointerException e){
-			createFiles();
-		      dataFile2 = new File(getDataFolder(), "mutes.yml");
-		      dconfig2 = YamlConfiguration.loadConfiguration(dataFile2);
-			
-		}
 	}
 	
 	public void configInit(){
@@ -68,7 +54,7 @@ public class CustomBans extends JavaPlugin {
 		prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
 		banned = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned"));
 		kicked = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked"));
-		targetkmsg = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targekmsg"));
+		targetkmsg = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg"));
 		targetmsg = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg"));
 		noperm = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm"));
 		unbanned = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.unbanned"));

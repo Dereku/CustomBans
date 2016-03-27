@@ -114,9 +114,6 @@ public class PlayerListener implements Listener {
     }
     @EventHandler
     public void onCommandWhileMuted(final PlayerCommandPreprocessEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously((Plugin)this, (Runnable)new Runnable() {
-            @Override
-            public void run() {
                 if (CustomBans.dconfig2.getStringList("mutelist").contains(e.getPlayer().getName().toLowerCase())) {
                     final String message = e.getMessage();
                     final String[] split = message.split(" ");
@@ -166,8 +163,6 @@ public class PlayerListener implements Listener {
                         }
                     }
                 }
-            }
-        });
     }
     
     
