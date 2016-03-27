@@ -22,6 +22,8 @@ public class Maincmd implements CommandExecutor {
 		sender.sendMessage(prefix + "§7Версия: §c" + CustomBans.geInstance().getDescription().getVersion() + "§7 by §citzRex");
 		sender.sendMessage("§6* §c/" + label + " §cbanlist §7- Список забаненых.");
 		sender.sendMessage("§6* §c/" + label + " §cdeletebans §7- Очистить банлист.");
+		sender.sendMessage("§6* §c/" + label + " §cdeletemutes §7- Очистить мутлист.");
+		sender.sendMessage("§6* §c/" + label + " §cmutelist §7- Список игроков с мутом.");
 		return false;
 	}
 		if(args.length == 1){
@@ -30,6 +32,14 @@ public class Maincmd implements CommandExecutor {
 				sender.sendMessage(prefix + "§7Список забаненых:");
 				for(String s : banlist){
 					sender.sendMessage("§c- §7" + s + " (Пермамент - " + (CustomBans.dconfig.getBoolean((s) + ".permament") ? "§aДа§7)" : "§cНет§7)"));
+				}
+				return false;
+				}
+			if(args[0].equalsIgnoreCase("mutelist")){
+				List<String> mutelist = CustomBans.dconfig2.getStringList("mutelist");
+				sender.sendMessage(prefix + "§7Список игроков с мутом:");
+				for(String s : mutelist){
+					sender.sendMessage("§c- §7" + s);
 				}
 				return false;
 				}
@@ -49,6 +59,21 @@ public class Maincmd implements CommandExecutor {
 			}
 			sender.sendMessage(prefix + "§7Все забаненые игроки - разбанены.");
 			}
+		if(args[0].equalsIgnoreCase("deletemutes")){
+			List<String> mutelist = CustomBans.dconfig.getStringList("mutelist");
+			if(mutelist.size() == 0){
+				sender.sendMessage(prefix + "§cВ мутлисте нету замученых игроков.");
+				return false;
+			}
+			mutelist.clear();
+			CustomBans.dconfig.set("mutelist", mutelist);
+			try {
+				CustomBans.dconfig.save(CustomBans.dataFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		sender.sendMessage(prefix + "§7Все данных в мутлисте очищены.");
 		return false;
  }
 }

@@ -25,7 +25,7 @@ public class Kick implements CommandExecutor {
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target.hasPermission("cbans.shield")){
-						sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+						sender.sendMessage(prefix + "§7Игрок защищён от кика.");
 						return true;
 					}
 					for(Player pl : Bukkit.getOnlinePlayers()){
@@ -46,7 +46,7 @@ public class Kick implements CommandExecutor {
 				reason = org.apache.commons.lang.StringUtils.join(args, ' ', 1, args.length);
 				Player target = Bukkit.getPlayer(args[0]);
 				if(target.hasPermission("cbans.shield")){
-					sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+					sender.sendMessage(prefix + "§7Игрок защищён от кика.");
 					return true;
 				}
 				for(Player pl : Bukkit.getOnlinePlayers()){

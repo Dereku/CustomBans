@@ -39,7 +39,7 @@ public class unMute implements CommandExecutor {
 			if(args.length == 1){
 				List<String> mutelist = (List<String>) config.getStringList("mutelist");
 				if(!mutelist.contains(args[0].toLowerCase())){
-					sender.sendMessage(prefix + "Данный игрок не был замутен.");
+					sender.sendMessage(prefix + "Данный игрок не был замучен.");
 					return true;
 				}
 				mutelist.remove(args[0].toLowerCase());
