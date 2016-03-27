@@ -28,21 +28,21 @@ public class unBan implements CommandExecutor {
 			Player p = (Player) sender;
 			if(!p.hasPermission("cbans.unban")){
 				sender.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
-				return true;
+				return false;
 			}
 			config = CustomBans.dconfig;
 			dataFile = CustomBans.dataFile;
 			if(args.length == 0){
 				sender.sendMessage(prefix + "Используйте: §6/unban [ник]");
-				return true;
+				return false;
 			}
 			if(args.length == 1){
 				List<String> banlist = (List<String>) config.getStringList("banlist");
-				if(!banlist.contains(args[0].toLowerCase())){
+				if(!banlist.contains(args[0])){
 					sender.sendMessage(prefix + "Данный игрок не был забанен.");
-					return true;
+					return false;
 				}
-				banlist.remove(args[0].toLowerCase());
+				banlist.remove(args[0]);
 				for(Player pl : Bukkit.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unbanned").replace("%admin%", p.getName()).replace("%unbanned%", args[0])));
 				}

@@ -15,6 +15,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.mysql.jdbc.StringUtils;
+
 public class TempBanner implements CommandExecutor {
 
 	public static String prefix = CustomBans.prefix;
@@ -40,19 +42,19 @@ public class TempBanner implements CommandExecutor {
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "Не указана")).replace("%time%", args[1]));
 						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана").replace("%time%", args[1])));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
-						if(!banlist.contains(target.getName().toLowerCase())){
-							banlist.add(target.getName().toLowerCase());
+						if(!banlist.contains(target.getName())){
+							banlist.add(target.getName());
 						CustomBans.dconfig.set("banlist", banlist);
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", "Не указана");
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".time", getDateTime());
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".permament", false);
-			            CustomBans.dconfig.set(String.valueOf(target.getName().toLowerCase()) + ".lasts", Integer.valueOf(Integer.parseInt(args[1])));
+						CustomBans.dconfig.set(target.getName() + ".bannedby", p.getName());
+						CustomBans.dconfig.set(target.getName() + ".reason", "Не указана");
+						CustomBans.dconfig.set(target.getName() + ".time", getDateTime());
+						CustomBans.dconfig.set(target.getName() + ".permament", false);
+			            CustomBans.dconfig.set(String.valueOf(target.getName()) + ".lasts", Integer.valueOf(Integer.parseInt(args[1])));
 			            Integer day_of_year = Integer.valueOf(Calendar.getInstance().get(6));
 			            Integer hour = Integer.valueOf(Calendar.getInstance().get(11));
 			            Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
 			            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
-			            CustomBans.dconfig.set(String.valueOf(target.getName().toLowerCase()) + ".bans-time", currentMin);
+			            CustomBans.dconfig.set(String.valueOf(target.getName()) + ".bans-time", currentMin);
 						try {
 							CustomBans.dconfig.save(CustomBans.dataFile);
 						} catch (IOException e) {
@@ -72,19 +74,19 @@ public class TempBanner implements CommandExecutor {
 					for(Player pl : Bukkit.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", "Не указана")).replace("%time%", args[1]));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
-						if(!banlist.contains(args[0].toLowerCase())){
-							banlist.add(args[0].toLowerCase());
+						if(!banlist.contains(args[0])){
+							banlist.add(args[0]);
 						CustomBans.dconfig.set("banlist", banlist);
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".bannedby", p.getName());
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".reason", "Не указана");
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".time", getDateTime());
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".permament", false);
-			            CustomBans.dconfig.set(String.valueOf(args[0].toLowerCase()) + ".lasts", Integer.valueOf(Integer.parseInt(args[1])));
+						CustomBans.dconfig.set(args[0] + ".bannedby", p.getName());
+						CustomBans.dconfig.set(args[0] + ".reason", "Не указана");
+						CustomBans.dconfig.set(args[0] + ".time", getDateTime());
+						CustomBans.dconfig.set(args[0] + ".permament", false);
+			            CustomBans.dconfig.set(String.valueOf(args[0]) + ".lasts", Integer.valueOf(Integer.parseInt(args[1])));
 			            Integer day_of_year = Integer.valueOf(Calendar.getInstance().get(6));
 			            Integer hour = Integer.valueOf(Calendar.getInstance().get(11));
 			            Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
 			            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
-			            CustomBans.dconfig.set(String.valueOf(args[0].toLowerCase()) + ".bans-time", currentMin);
+			            CustomBans.dconfig.set(String.valueOf(args[0]) + ".bans-time", currentMin);
 						try {
 							CustomBans.dconfig.save(CustomBans.dataFile);
 						} catch (IOException e1) {
@@ -113,16 +115,16 @@ public class TempBanner implements CommandExecutor {
 					if(!banlist.contains(target.getName())){
 						banlist.add(target.getName());
 					CustomBans.dconfig.set("banlist", banlist);
-					CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
-					CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", reason);
-					CustomBans.dconfig.set(target.getName().toLowerCase() + ".time", getDateTime());
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".permament", false);
-		            CustomBans.dconfig.set(String.valueOf(args[0].toLowerCase()) + ".lasts", Integer.valueOf(Integer.parseInt(args[1])));
+					CustomBans.dconfig.set(target.getName() + ".bannedby", p.getName());
+					CustomBans.dconfig.set(target.getName() + ".reason", reason);
+					CustomBans.dconfig.set(target.getName() + ".time", getDateTime());
+					CustomBans.dconfig.set(args[0] + ".permament", false);
+		            CustomBans.dconfig.set(String.valueOf(args[0]) + ".lasts", Integer.valueOf(Integer.parseInt(args[1])));
 		            Integer day_of_year = Integer.valueOf(Calendar.getInstance().get(6));
 		            Integer hour = Integer.valueOf(Calendar.getInstance().get(11));
 		            Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
 		            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
-		            CustomBans.dconfig.set(String.valueOf(args[0].toLowerCase()) + ".bans-time", currentMin);
+		            CustomBans.dconfig.set(String.valueOf(args[0]) + ".bans-time", currentMin);
 		            CustomBans.dconfig.save(CustomBans.dataFile);
 					return true;
 				}
@@ -137,19 +139,19 @@ public class TempBanner implements CommandExecutor {
 				for(Player pl : Bukkit.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
-					if(!banlist.contains(args[0].toLowerCase())){
-						banlist.add(args[0].toLowerCase());
+					if(!banlist.contains(args[0])){
+						banlist.add(args[0]);
 					CustomBans.dconfig.set("banlist", banlist);
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".bannedby", p.getName());
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".reason", reason);
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".time", getDateTime());
-					CustomBans.dconfig.set(args[0].toLowerCase() + ".permament", false);
-		            CustomBans.dconfig.set(String.valueOf(args[0].toLowerCase()) + ".lasts", Integer.valueOf(Integer.parseInt(args[1])));
+					CustomBans.dconfig.set(args[0] + ".bannedby", p.getName());
+					CustomBans.dconfig.set(args[0] + ".reason", reason);
+					CustomBans.dconfig.set(args[0] + ".time", getDateTime());
+					CustomBans.dconfig.set(args[0] + ".permament", false);
+		            CustomBans.dconfig.set(String.valueOf(args[0]) + ".lasts", Integer.valueOf(Integer.parseInt(args[1])));
 		            Integer day_of_year = Integer.valueOf(Calendar.getInstance().get(6));
 		            Integer hour = Integer.valueOf(Calendar.getInstance().get(11));
 		            Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
 		            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
-		            CustomBans.dconfig.set(String.valueOf(args[0].toLowerCase()) + ".bans-time", currentMin);
+		            CustomBans.dconfig.set(String.valueOf(args[0]) + ".bans-time", currentMin);
 		            try {
 						CustomBans.dconfig.save(CustomBans.dataFile);
 					} catch (IOException e) {

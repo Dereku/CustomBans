@@ -1,5 +1,6 @@
 package me.itzrex.cbans;
 
+import java.io.File;
 import java.util.List;
 
 import net.md_5.bungee.api.ChatColor;
@@ -28,10 +29,10 @@ public class Checker implements CommandExecutor {
 			if(args.length == 1){
 		        FileConfiguration configuration = CustomBans.dconfig;
 		        List<String> banlist = configuration.getStringList("banlist");
-		        if (banlist.contains(args[0].toLowerCase())){
-					String reason = CustomBans.dconfig.getString(args[0].toLowerCase() + ".reason");
-					String time = CustomBans.dconfig.getString(args[0].toLowerCase() + ".time");
-					String bannedby = CustomBans.dconfig.getString(args[0].toLowerCase() + ".bannedby");
+		        if (banlist.contains(args[0])){
+					String reason = CustomBans.dconfig.getString(args[0] + ".reason");
+					String time = CustomBans.dconfig.getString(args[0] + ".time");
+					String bannedby = CustomBans.dconfig.getString(args[0] + ".bannedby");
 					p.sendMessage("§7Информация про игрока: §c" + args[0]);
 					p.sendMessage("§7Причина: §c" + reason);
 					p.sendMessage("§7Дата бана: §c" + time);
