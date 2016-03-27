@@ -68,7 +68,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onChat(final AsyncPlayerChatEvent e) {
         if (CustomBans.dconfig2.getStringList("mutelist").contains(e.getPlayer().getName().toLowerCase())) {
-            final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permanent");
+            final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permament");
             if (permanent) {
                 e.getPlayer().sendMessage(ChatColor.RED + "Вы не можете писать в чат, так как он отключён для вас.");
                 e.getPlayer().sendMessage("Ваш чат заблокировал:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
@@ -120,7 +120,7 @@ public class PlayerListener implements Listener {
                     if (!CustomBans.geInstance().getConfig().getStringList("mute-commands").contains(split[0])) {
                         return;
                     }
-                    final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permanent");
+                    final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permament");
                     if (permanent) {
                         e.getPlayer().sendMessage(ChatColor.RED + "Вы не можете писать в чат, так как он отключён для вас.");
                         e.getPlayer().sendMessage("Ваш чат заблокировал:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));

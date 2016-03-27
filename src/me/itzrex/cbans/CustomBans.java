@@ -50,7 +50,6 @@ public class CustomBans extends JavaPlugin {
 	}
 	
 	public void configInit(){
-		saveDefaultConfig();
 		prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
 		banned = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned"));
 		kicked = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked"));
@@ -58,6 +57,7 @@ public class CustomBans extends JavaPlugin {
 		targetmsg = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg"));
 		noperm = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm"));
 		unbanned = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.unbanned"));
+		saveDefaultConfig();
 	}
 	
 	public void createFiles(){
