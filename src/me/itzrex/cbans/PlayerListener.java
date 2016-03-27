@@ -25,7 +25,7 @@ public class PlayerListener implements Listener {
 			return;
 		}
 		if(banlist.contains(p.getName().toLowerCase())){
-			if(CustomBans.dconfig.getBoolean(p.getName() + ".permament")){
+			if(CustomBans.dconfig.getBoolean(p.getName().toLowerCase() + ".permament")){
 				String reason = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".reason");
 				String time = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".time");
 				String bannedby = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".bannedby");
