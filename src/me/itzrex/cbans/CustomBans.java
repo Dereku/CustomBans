@@ -16,11 +16,15 @@ public class CustomBans extends JavaPlugin {
 		return plugin;
 	}
 	public static File dataFile;
+	public static File dataFile2;
 	public static File players;
 	public static YamlConfiguration dplayers;
 	public static YamlConfiguration dconfig;
+	public static YamlConfiguration dconfig2;
 	public static String banned;
 	public static String targetmsg;
+	public static String kicked;
+	public static String targetkmsg;
 	public static String noperm;
 	public static String prefix;
 	public static String unbanned;
@@ -31,7 +35,11 @@ public class CustomBans extends JavaPlugin {
 		plugin = this;
 		configInit();
 		createFiles();
+		getCommand("kick").setExecutor(new Kick());
 		getCommand("ban").setExecutor(new Ban());
+		getCommand("mute").setExecutor(new Mute());
+		getCommand("tempmute").setExecutor(new TempMute());
+		getCommand("unmute").setExecutor(new unMute());
 		getCommand("custombans").setExecutor(new Maincmd());
 		getCommand("checkban").setExecutor(new Checker());
 		getCommand("unban").setExecutor(new unBan());
@@ -45,12 +53,22 @@ public class CustomBans extends JavaPlugin {
 		      dconfig = YamlConfiguration.loadConfiguration(dataFile);
 			
 		}
+		try {
+		getLogger().info("Mutes data loaded. (" + dconfig2.getStringList("mutelist").size() + ")");
+		} catch(NullPointerException e){
+			createFiles();
+		      dataFile2 = new File(getDataFolder(), "mutes.yml");
+		      dconfig2 = YamlConfiguration.loadConfiguration(dataFile2);
+			
+		}
 	}
 	
 	public void configInit(){
 		saveDefaultConfig();
 		prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
 		banned = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned"));
+		kicked = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked"));
+		targetkmsg = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targekmsg"));
 		targetmsg = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg"));
 		noperm = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm"));
 		unbanned = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.unbanned"));
@@ -78,8 +96,21 @@ public class CustomBans extends JavaPlugin {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		      dataFile = new File(getDataFolder(), "bans.yml");
-		      dconfig = YamlConfiguration.loadConfiguration(dataFile);
-	}
+		}
+	      dataFile = new File(getDataFolder(), "bans.yml");
+	      dconfig = YamlConfiguration.loadConfiguration(dataFile);
+	      if(!new File(getDataFolder(), "mutes.yml").exists()){
+				File configFile = new File(getDataFolder(), "mutes.yml");
+				YamlConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+			      List<String> mutelist = new ArrayList<String>();
+			      configuration.set("mutelist", mutelist);
+			    try {
+					configuration.save(configFile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		      dataFile2 = new File(getDataFolder(), "mutes.yml");
+		      dconfig2 = YamlConfiguration.loadConfiguration(dataFile);
   }
 }
