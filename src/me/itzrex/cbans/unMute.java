@@ -13,40 +13,40 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-public class unBan implements CommandExecutor {
+public class unMute implements CommandExecutor {
 
 	public static String prefix = CustomBans.prefix;
 	YamlConfiguration config;
 	File dataFile;
 	
-	public unBan(){
-		this.config = CustomBans.dconfig;
-		this.dataFile = CustomBans.dataFile;
+	public unMute(){
+		this.config = CustomBans.dconfig2;
+		this.dataFile = CustomBans.dataFile2;
 	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 			Player p = (Player) sender;
-			if(!p.hasPermission("cbans.unban")){
+			if(!p.hasPermission("cbans.unmute")){
 				sender.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
 				return true;
 			}
-			config = CustomBans.dconfig;
-			dataFile = CustomBans.dataFile;
+			config = CustomBans.dconfig2;
+			dataFile = CustomBans.dataFile2;
 			if(args.length == 0){
-				sender.sendMessage(prefix + "Используйте: §6/unban [ник]");
+				sender.sendMessage(prefix + "Используйте: §6/unmute [ник]");
 				return true;
 			}
 			if(args.length == 1){
-				List<String> banlist = (List<String>) config.getStringList("banlist");
-				if(!banlist.contains(args[0].toLowerCase())){
-					sender.sendMessage(prefix + "Данный игрок не был забанен.");
+				List<String> mutelist = (List<String>) config.getStringList("mutelist");
+				if(!mutelist.contains(args[0].toLowerCase())){
+					sender.sendMessage(prefix + "Данный игрок не был замутен.");
 					return true;
 				}
-				banlist.remove(args[0].toLowerCase());
+				mutelist.remove(args[0].toLowerCase());
 				for(Player pl : Bukkit.getOnlinePlayers()){
-					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unbanned").replace("%admin%", p.getName()).replace("%unbanned%", args[0])));
+					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unmuted").replace("%admin%", p.getName()).replace("%unmuted%", args[0])));
 				}
-				config.set("banlist", banlist);
+				config.set("mutelist", mutelist);
 				try {
 					config.save(dataFile);
 				} catch (IOException e) {
@@ -54,7 +54,7 @@ public class unBan implements CommandExecutor {
 					e.printStackTrace();
 				}
 			}
-		return false;
+		return true;
 	}
 
 }
