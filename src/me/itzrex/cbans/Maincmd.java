@@ -16,37 +16,37 @@ public class Maincmd implements CommandExecutor {
 		if(args.length == 0){
 		Player p = (Player) sender;
 		if(!p.hasPermission("cbans.cmd")){
-			sender.sendMessage(prefix + "§cУ вас не достаточно прав");
+			sender.sendMessage(prefix + "В§cРќРµС‚ РїСЂР°РІ");
 			return false;
 		}
-		sender.sendMessage(prefix + "§7Версия: §c" + CustomBans.geInstance().getDescription().getVersion() + "§7 by §citzRex");
-		sender.sendMessage("§6* §c/" + label + " §cbanlist §7- Список забаненых.");
-		sender.sendMessage("§6* §c/" + label + " §cdeletebans §7- Очистить банлист.");
-		sender.sendMessage("§6* §c/" + label + " §cdeletemutes §7- Очистить мутлист.");
-		sender.sendMessage("§6* §c/" + label + " §cmutelist §7- Список игроков с мутом.");
+		sender.sendMessage(prefix + "Р’РµСЂСЃРёСЏ: В§c" + CustomBans.geInstance().getDescription().getVersion() + "В§7 by В§citzRex");
+		sender.sendMessage("В§6* В§c/" + label + " В§cbanlist В§7- РЎРїРёСЃРѕРє Р·Р°Р±Р°РЅРµРЅС‹С… РёРіСЂРѕРєРѕРІ.");
+		sender.sendMessage("В§6* В§c/" + label + " В§cdeletebans В§7- РЈРґР°Р»РёС‚СЊ СЃРїРёСЃРѕРє Р·Р°Р±Р°РЅРµРЅС‹С….");
+		sender.sendMessage("В§6* В§c/" + label + " В§cdeletemutes В§7- РЈРґР°Р»РёС‚СЊ СЃРїРёСЃРѕРє РёРіСЂРѕРєРѕРІ СЃ РјСѓС‚Р°РјРё.");
+		sender.sendMessage("В§6* В§c/" + label + " В§cmutelist В§7- РЎРїРёСЃРѕРє РёРіСЂРѕРєРѕРІ СЃ РјСѓС‚РѕРј.");
 		return false;
 	}
 		if(args.length == 1){
 			if(args[0].equalsIgnoreCase("banlist")){
 				List<String> banlist = CustomBans.dconfig.getStringList("banlist");
-				sender.sendMessage(prefix + "§7Список забаненых:");
+				sender.sendMessage(prefix + "В§7Р—Р°Р±Р°РЅРµРЅС‹Рµ РёРіСЂРѕРєРё:");
 				for(String s : banlist){
-					sender.sendMessage("§c- §7" + s + " (Пермамент - " + (CustomBans.dconfig.getBoolean((s) + ".permament") ? "§aДа§7)" : "§cНет§7)"));
+					sender.sendMessage("В§c- В§7" + s + " (РџРµСЂРјР°РјРµРЅС‚ - " + (CustomBans.dconfig.getBoolean((s) + ".permament") ? "В§aР”Р°7)" : "В§cРќРµС‚7)"));
 				}
 				return false;
 				}
 			if(args[0].equalsIgnoreCase("mutelist")){
 				List<String> mutelist = CustomBans.dconfig2.getStringList("mutelist");
-				sender.sendMessage(prefix + "§7Список игроков с мутом:");
+				sender.sendMessage(prefix + "В§7РЎРїРёСЃРѕРє РёРіСЂРѕРєРѕРІ СЃ РјСѓС‚РѕРј:");
 				for(String s : mutelist){
-					sender.sendMessage("§c- §7" + s);
+					sender.sendMessage("В§c- В§7" + s);
 				}
 				return false;
 				}
 			if(args[0].equalsIgnoreCase("deletebans")){
 				List<String> banlist = CustomBans.dconfig.getStringList("banlist");
 				if(banlist.size() == 0){
-					sender.sendMessage(prefix + "§cВ банлисте нету забаненых игроков.");
+					sender.sendMessage(prefix + "В§cР’ Р±Р°РЅР»РёСЃС‚Рµ РЅРµС‚Сѓ Р·Р°Р±Р°РЅРµРЅС‹С… РёРіСЂРѕРєРѕРІ");
 					return false;
 				}
 				banlist.clear();
@@ -57,12 +57,12 @@ public class Maincmd implements CommandExecutor {
 					e.printStackTrace();
 				}
 			}
-			sender.sendMessage(prefix + "§7Все забаненые игроки - разбанены.");
+			sender.sendMessage(prefix + "В§7Р‘Р°РЅР»РёСЃС‚ РѕС‡РёС‰РµРЅ.");
 			}
 		if(args[0].equalsIgnoreCase("deletemutes")){
 			List<String> mutelist = CustomBans.dconfig.getStringList("mutelist");
 			if(mutelist.size() == 0){
-				sender.sendMessage(prefix + "§cВ мутлисте нету замученых игроков.");
+				sender.sendMessage(prefix + "В§7Р’ РјСѓС‚Р»РёСЃС‚Рµ РЅРµС‚Сѓ РёРіСЂРѕРєРѕРІ");
 				return false;
 			}
 			mutelist.clear();
@@ -73,7 +73,7 @@ public class Maincmd implements CommandExecutor {
 				e.printStackTrace();
 			}
 		}
-		sender.sendMessage(prefix + "§7Все данных в мутлисте очищены.");
+		sender.sendMessage(prefix + "В§7РњСѓС‚Р»РёСЃС‚ РѕС‡РёС‰РµРЅ.");
 		return false;
  }
 }

@@ -22,7 +22,7 @@ public class Checker implements CommandExecutor {
 				return false;
 			}
 			if(args.length == 0){
-				p.sendMessage(prefix + "§7Используйте: §6/checkban [ник]");
+				p.sendMessage(prefix + "В§7РСЃРїРѕР»СЊР·СѓР№С‚Рµ: В§6/checkban [РЅРёРє]");
 				return false;
 			}
 			if(args.length == 1){
@@ -32,13 +32,13 @@ public class Checker implements CommandExecutor {
 					String reason = CustomBans.dconfig.getString(args[0].toLowerCase() + ".reason");
 					String time = CustomBans.dconfig.getString(args[0].toLowerCase() + ".time");
 					String bannedby = CustomBans.dconfig.getString(args[0].toLowerCase() + ".bannedby");
-					p.sendMessage("§7Информация про игрока: §c" + args[0]);
-					p.sendMessage("§7Причина: §c" + reason);
-					p.sendMessage("§7Дата бана: §c" + time);
-					p.sendMessage("§7Забанил: §c" + bannedby);
+					p.sendMessage("В§7РРЅС„РѕСЂРјР°С†РёСЏ Рѕ РёРіСЂРѕРєРµ: В§c" + args[0]);
+					p.sendMessage("В§7РџСЂРёС‡РёРЅР°: В§c" + reason);
+					p.sendMessage("В§7Р’СЂРµРјСЏ Р±Р°РЅР°: В§c" + time);
+					p.sendMessage("В§7Р—Р°Р±Р°РЅРёР» В§c" + bannedby);
 					return false;
 		        } else {
-		        	p.sendMessage(prefix + "§7Игрок не был забанен.");
+		        	p.sendMessage(prefix + "В§7РРіСЂРѕРє РЅРµ Р·Р°Р±Р°РЅРµРЅ.");
 		        	return false;
 		        }
 			}

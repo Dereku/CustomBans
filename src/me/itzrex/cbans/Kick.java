@@ -18,35 +18,35 @@ public class Kick implements CommandExecutor {
 				return true;
 			}
 			if(args.length == 0){
-				sender.sendMessage(prefix + "§7Используйте: §6/kick [ник] [причина]");
+				sender.sendMessage(prefix + "В§7РСЃРїРѕР»СЊР·СѓР№С‚Рµ: В§6/kick [РЅРёРє] [РїСЂРёС‡РёРЅР°]");
 				return true;
 			}
 			if(args.length == 1){
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target.hasPermission("cbans.shield")){
-						sender.sendMessage(prefix + "§7Игрок защищён от кика.");
+						sender.sendMessage(prefix + "В§7РРіСЂРѕРє Р·Р°С‰РёС‰С‘РЅ РѕС‚ РєРёРєР°.");
 						return true;
 					}
 					for(Player pl : Bukkit.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", "Не указана")));
-						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана")));
+						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ")));
+						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg").replace("%admin%", p.getName()).replace("%reason%", "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ")));
 				}
 						
 				} catch (NullPointerException e){
-					sender.sendMessage(prefix + "§7Игрок не найден.");
+					sender.sendMessage(prefix + "В§7РРіСЂРѕРє РЅРµ РѕРЅР»Р°Р№РЅ.");
 					
 				} 
 			}
 			if(args.length < 2 ){
 				return true;
 			}
-			String reason = "Не указана.";
+			String reason = "РќРµ СѓРєР°Р·Р°РЅР°.";
 			try {
 				reason = org.apache.commons.lang.StringUtils.join(args, ' ', 1, args.length);
 				Player target = Bukkit.getPlayer(args[0]);
 				if(target.hasPermission("cbans.shield")){
-					sender.sendMessage(prefix + "§7Игрок защищён от кика.");
+					sender.sendMessage(prefix + "В§7РРіСЂРѕРє Р·Р°С‰РёС‰С‘РЅ РѕС‚ РєРёРєР°.");
 					return true;
 				}
 				for(Player pl : Bukkit.getOnlinePlayers()){
@@ -56,7 +56,7 @@ public class Kick implements CommandExecutor {
 			}
 				
 			} catch (NullPointerException e2){
-				sender.sendMessage(prefix + "§7Игрок не найден.");
+				sender.sendMessage(prefix + "В§7РРіСЂРѕРє РЅРµ РѕРЅР»Р°Р№РЅ.");
 			}
 		return true;
 }

@@ -33,13 +33,13 @@ public class unMute implements CommandExecutor {
 			config = CustomBans.dconfig2;
 			dataFile = CustomBans.dataFile2;
 			if(args.length == 0){
-				sender.sendMessage(prefix + "Используйте: §6/unmute [ник]");
+				sender.sendMessage(prefix + "РСЃРїРѕР»СЊР·СѓР№С‚Рµ: В§6/unmute [РЅРёРє]");
 				return true;
 			}
 			if(args.length == 1){
 				List<String> mutelist = (List<String>) config.getStringList("mutelist");
 				if(!mutelist.contains(args[0].toLowerCase())){
-					sender.sendMessage(prefix + "Данный игрок не был замучен.");
+					sender.sendMessage(prefix + "РРіСЂРѕРє РЅРµ Р±С‹Р» РІ РјСѓС‚Рµ.");
 					return true;
 				}
 				mutelist.remove(args[0].toLowerCase());

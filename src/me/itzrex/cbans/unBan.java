@@ -33,13 +33,13 @@ public class unBan implements CommandExecutor {
 			config = CustomBans.dconfig;
 			dataFile = CustomBans.dataFile;
 			if(args.length == 0){
-				sender.sendMessage(prefix + "Используйте: §6/unban [ник]");
+				sender.sendMessage(prefix + "РСЃРїРѕР»СЊР·СѓР№С‚Рµ: В§6/unban [РЅРёРє]");
 				return true;
 			}
 			if(args.length == 1){
 				List<String> banlist = (List<String>) config.getStringList("banlist");
 				if(!banlist.contains(args[0].toLowerCase())){
-					sender.sendMessage(prefix + "Данный игрок не был забанен.");
+					sender.sendMessage(prefix + "Р”Р°РЅРЅС‹Р№ РёРіСЂРѕРє РЅРµ Р·Р°Р±Р°РЅРµРЅ.");
 					return true;
 				}
 				banlist.remove(args[0].toLowerCase());
