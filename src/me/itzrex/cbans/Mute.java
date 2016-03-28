@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 
 public class Mute implements CommandExecutor {
 
+	/*
+	 * Класс, отвечающий за мут
+	 */
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -27,6 +30,7 @@ public class Mute implements CommandExecutor {
 				sender.sendMessage(prefix + "§7Используйте: §6/mute [ник] [причина]");
 				return true;
 			}
+			//Мут без причины
 			if(args.length == 1){
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
@@ -79,6 +83,7 @@ public class Mute implements CommandExecutor {
 			if(args.length < 2 ){
 				return true;
 			}
+			//Мут с причиной
 			String reason = "Не указана.";
 			try {
 				reason = org.apache.commons.lang.StringUtils.join(args, ' ', 1, args.length);

@@ -28,12 +28,21 @@ public class CustomBans extends JavaPlugin {
 	public static String noperm;
 	public static String prefix;
 	public static String unbanned;
+
 	
+	/*
+	 * Главный класс.
+	 * CustomBans by @itzRex
+	 * Open Source
+	 */
 	@Override
 	public void onEnable() {
 		plugin = this;
+		//Загружаем конфиг
 		configInit();
+		//Создаём файлы bans.yml, mutes.yml, players.yml
 		createFiles();
+		//Достаём команды.
 		getCommand("kick").setExecutor(new Kick());
 		getCommand("ban").setExecutor(new Ban());
 		getCommand("mute").setExecutor(new Mute());
@@ -43,11 +52,15 @@ public class CustomBans extends JavaPlugin {
 		getCommand("checkban").setExecutor(new Checker());
 		getCommand("unban").setExecutor(new unBan());
 		getCommand("tempban").setExecutor(new TempBanner());
+		//Регистрация событий
 		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+		//Вывод данных в консоль.
 		getLogger().info("CustomBans v" + getDescription().getVersion() + " enabled!");
 		getLogger().info("Bans data loaded. (" + dconfig.getStringList("banlist").size() + ")");
 		getLogger().info("Mutes data loaded. (" + dconfig2.getStringList("mutelist").size() + ")");
 	}
+	
+	//Загрузка конфига
 	
 	public void configInit(){
 		prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
@@ -59,7 +72,7 @@ public class CustomBans extends JavaPlugin {
 		unbanned = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.unbanned"));
 		saveDefaultConfig();
 	}
-	
+	//Создание файлов.
 	public void createFiles(){
 		if(!new File(getDataFolder(), "players.yml").exists()){
 			File playersd = new File(getDataFolder(), "players.yml");

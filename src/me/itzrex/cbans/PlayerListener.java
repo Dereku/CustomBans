@@ -17,6 +17,9 @@ import org.bukkit.plugin.Plugin;
 
 public class PlayerListener implements Listener {
 
+	/*
+	 * Слушатель игроков на: баны, временые баны, муты, временный муты
+	 */
 	@EventHandler
 	public void onJoin(PlayerLoginEvent e) throws IOException{
 		Player p = e.getPlayer();
@@ -24,14 +27,22 @@ public class PlayerListener implements Listener {
 		if(CustomBans.dplayers.getBoolean(p.getName())){
 			return;
 		}
+		//Проверяем, есть-ли игрок в банлисте.
 		if(banlist.contains(p.getName().toLowerCase())){
+			//Проверяем, забанен-ли игрок навсегда (пермамент).
 			if(CustomBans.dconfig.getBoolean(p.getName().toLowerCase() + ".permament")){
+				//Достаём причину бана
 				String reason = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".reason");
+				//Достаём время бана.
 				String time = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".time");
+				//Достаём ник игрока который забанил.
 				String bannedby = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".bannedby");
 				e.getResult();
+				//Кикаем его с сообщением:
 				e.disallow(PlayerLoginEvent.Result.KICK_OTHER, "§cВы были забанены.\nЗабанил: §6" + bannedby + "\n§cВремя: §6" + time + "\n§cПричина: §6" + reason);
+				//Если-же игрок временно забанен, пишем:
 			} else if(!CustomBans.dconfig.getBoolean(e.getPlayer().getName().toLowerCase() + ".permament")){
+				//Достаём календарные данные.
 		        Integer day_of_year = Integer.valueOf(Calendar.getInstance().get(6));
 		        Integer hour = Integer.valueOf(Calendar.getInstance().get(11));
 		        Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
@@ -39,15 +50,20 @@ public class PlayerListener implements Listener {
 		        Integer banLasts = Integer.valueOf(CustomBans.dconfig.getInt(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".lasts"));
 		        Integer bansTime = Integer.valueOf(CustomBans.dconfig.getInt(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".bans-time"));
 		        Boolean unbanned = false;
+		        //Если, время бана истекло, то ставим булевое значение "unbanned" на "true"
 		        if (currentMin.intValue() - banLasts.intValue() > bansTime.intValue()) {
 		            unbanned = Boolean.valueOf(true);
 		          }
+		        //Получаем минуты, через истечение какой, будет разбанен игрок
 		        Integer towait = Integer.valueOf(bansTime.intValue() - (currentMin.intValue() - banLasts.intValue()));
+		        //Если время истекло:
 		        if (unbanned.booleanValue())
 		        {
+		        	//Удаляем его с банлиста
 		        	banlist.remove(e.getPlayer().getName().toLowerCase());
 		        	CustomBans.dconfig.set("banlist", banlist);
 		        	CustomBans.dconfig.save(CustomBans.dataFile);
+		        	//В другом случае:
 		        } else {
 					String reason = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".reason");
 					String time = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".time");
@@ -57,9 +73,12 @@ public class PlayerListener implements Listener {
 		        }
 			}
 		}
+		//Проверка игрока на OP или право "cbans.shield"
+		//Если он имеет это право.
 		if(p.hasPermission("cbans.shield")){
 			CustomBans.dplayers.set(p.getName(), true);
 			CustomBans.dplayers.save(CustomBans.players);
+			//В другом случае:
 		} else {
 			CustomBans.dplayers.set(p.getName(), false);
 			CustomBans.dplayers.save(CustomBans.players);
@@ -67,6 +86,7 @@ public class PlayerListener implements Listener {
 	}
     @EventHandler
     public void onChat(final AsyncPlayerChatEvent e) {
+    	//Слушатель чата, спасибо за это  @Slavik123123123
         if (CustomBans.dconfig2.getStringList("mutelist").contains(e.getPlayer().getName().toLowerCase())) {
             final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permament");
             if (permanent) {
@@ -114,6 +134,7 @@ public class PlayerListener implements Listener {
     }
     @EventHandler
     public void onCommandWhileMuted(final PlayerCommandPreprocessEvent e) {
+    	//Запрет команд во время мута, которые запрещённые в конфиге.
                 if (CustomBans.dconfig2.getStringList("mutelist").contains(e.getPlayer().getName().toLowerCase())) {
                     final String message = e.getMessage();
                     final String[] split = message.split(" ");

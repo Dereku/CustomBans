@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 
 public class unMute implements CommandExecutor {
 
+	/*
+	 * Класс, отвечающий за разблокировку мута.
+	 */
 	public static String prefix = CustomBans.prefix;
 	YamlConfiguration config;
 	File dataFile;
@@ -24,6 +27,7 @@ public class unMute implements CommandExecutor {
 		this.dataFile = CustomBans.dataFile2;
 	}
 	@Override
+	//Тоже самое)
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 			Player p = (Player) sender;
 			if(!p.hasPermission("cbans.unmute")){

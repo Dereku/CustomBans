@@ -28,7 +28,9 @@ public class Checker implements CommandExecutor {
 			if(args.length == 1){
 		        FileConfiguration configuration = CustomBans.dconfig;
 		        List<String> banlist = configuration.getStringList("banlist");
+		        //Проверяем наличие игрока в банлисте.
 		        if (banlist.contains(args[0].toLowerCase())){
+		        	//Вывод данных.
 					String reason = CustomBans.dconfig.getString(args[0].toLowerCase() + ".reason");
 					String time = CustomBans.dconfig.getString(args[0].toLowerCase() + ".time");
 					String bannedby = CustomBans.dconfig.getString(args[0].toLowerCase() + ".bannedby");

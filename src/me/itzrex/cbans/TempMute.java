@@ -17,6 +17,9 @@ import org.bukkit.entity.Player;
 
 public class TempMute implements CommandExecutor {
 
+	/*
+	 * Класс, отвечающий за временный мут.
+	 */
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -29,6 +32,7 @@ public class TempMute implements CommandExecutor {
 				sender.sendMessage(prefix + "§7Используйте: §6/tempmute [ник] [время] [причина]");
 				return true;
 			}
+			//Временный мут без причины.
 			if(args.length == 2){
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
@@ -95,6 +99,7 @@ public class TempMute implements CommandExecutor {
 					p.sendMessage(prefix + "§cИгрок должен быть онлайн.");
 				}
 			}
+			//Временный мут с причиной
 			if(args.length >= 3){
 			String reason = "Не указана.";
 			try {

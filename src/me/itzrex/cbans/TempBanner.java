@@ -17,6 +17,9 @@ import org.bukkit.entity.Player;
 
 public class TempBanner implements CommandExecutor {
 
+	/*
+	 * Класс, отвечающий за временный бан.
+	 */
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -29,6 +32,7 @@ public class TempBanner implements CommandExecutor {
 				sender.sendMessage(prefix + "§7Используйте: §6/tempban [ник] [время] [причина]");
 				return true;
 			}
+			//Временный бан без причины
 			if(args.length == 2){
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
@@ -96,6 +100,7 @@ public class TempBanner implements CommandExecutor {
 					p.sendMessage(prefix + "§cНеверно введено время бана.");
 				}
 			}
+			//Временный бан с причиной
 			if(args.length >= 3){
 			String reason = "Не указана.";
 			try {

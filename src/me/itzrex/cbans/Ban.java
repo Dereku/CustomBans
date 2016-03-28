@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 
 public class Ban implements CommandExecutor {
 
+	/*
+	 * Класс, отвечающий за бан.
+	 */
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -27,6 +30,7 @@ public class Ban implements CommandExecutor {
 				sender.sendMessage(prefix + "§7Используйте: §6/ban [ник] [причина]");
 				return true;
 			}
+			//Бан без причины
 			if(args.length == 1){
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
@@ -34,12 +38,15 @@ public class Ban implements CommandExecutor {
 						sender.sendMessage(prefix + "§7Защищён от бана.");
 						return true;
 					}
+					//Отсылаем игрокам сообщение.
 					for(Player pl : Bukkit.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "Не указана")));
 						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана")));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
+						//Проверяем, есть-ли игрок в банлисте.
 						if(!banlist.contains(target.getName().toLowerCase())){
 							banlist.add(target.getName().toLowerCase());
+						//Если его там нет, заносим в банлист.
 						CustomBans.dconfig.set("banlist", banlist);
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", "Не указана");
@@ -80,6 +87,7 @@ public class Ban implements CommandExecutor {
 			if(args.length < 2 ){
 				return true;
 			}
+			//Бан с причиной
 			String reason = "Не указана.";
 			try {
 				reason = org.apache.commons.lang.StringUtils.join(args, ' ', 1, args.length);
