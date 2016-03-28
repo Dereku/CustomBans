@@ -12,6 +12,9 @@ import org.bukkit.entity.Player;
 
 public class Checker implements CommandExecutor {
 
+	/*
+	 * Класс, отвечающий за проверку бана.
+	 */
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

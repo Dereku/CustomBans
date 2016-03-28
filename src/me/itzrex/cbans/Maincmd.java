@@ -36,7 +36,7 @@ public class Maincmd implements CommandExecutor {
 				sender.sendMessage(prefix + "§7Забаненые игроки:");
 				//Отсылаем игроку список всех забаненых игроков через for.
 				for(String s : banlist){
-					sender.sendMessage("§c- §7" + s + " (Пермамент - " + (CustomBans.dconfig.getBoolean((s) + ".permament") ? "§aДа7)" : "§cНет7)"));
+					sender.sendMessage("§c- §7" + s + " (Пермамент - " + (CustomBans.dconfig.getBoolean((s) + ".permament") ? "§aДа§7)" : "§cНет§7)"));
 				}
 				return false;
 				}

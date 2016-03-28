@@ -5,9 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.itzrex.cbans.inv.InvCmd;
+
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.MetricsLite;
+
+import com.google.gson.Gson;
 
 public class CustomBans extends JavaPlugin {
 
@@ -17,10 +22,12 @@ public class CustomBans extends JavaPlugin {
 	}
 	public static File dataFile;
 	public static File dataFile2;
+	public static File dataFile3;
 	public static File players;
 	public static YamlConfiguration dplayers;
 	public static YamlConfiguration dconfig;
 	public static YamlConfiguration dconfig2;
+	public static YamlConfiguration dconfig3;
 	public static String banned;
 	public static String targetmsg;
 	public static String kicked;
@@ -43,6 +50,11 @@ public class CustomBans extends JavaPlugin {
 		//Создаём файлы bans.yml, mutes.yml, players.yml
 		createFiles();
 		//Достаём команды.
+		try {
+			new MetricsLite(this).start();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
 		getCommand("kick").setExecutor(new Kick());
 		getCommand("ban").setExecutor(new Ban());
 		getCommand("mute").setExecutor(new Mute());
@@ -51,13 +63,17 @@ public class CustomBans extends JavaPlugin {
 		getCommand("custombans").setExecutor(new Maincmd());
 		getCommand("checkban").setExecutor(new Checker());
 		getCommand("unban").setExecutor(new unBan());
+		getCommand("baninv").setExecutor(new InvCmd());
 		getCommand("tempban").setExecutor(new TempBanner());
 		//Регистрация событий
 		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 		//Вывод данных в консоль.
+		getLogger().info("================================================");
+		getLogger().info("Author: itzRex");
 		getLogger().info("CustomBans v" + getDescription().getVersion() + " enabled!");
 		getLogger().info("Bans data loaded. (" + dconfig.getStringList("banlist").size() + ")");
 		getLogger().info("Mutes data loaded. (" + dconfig2.getStringList("mutelist").size() + ")");
+		getLogger().info("================================================");
 	}
 	
 	//Загрузка конфига
@@ -110,6 +126,6 @@ public class CustomBans extends JavaPlugin {
 				}
 			}
 		      dataFile2 = new File(getDataFolder(), "mutes.yml");
-		      dconfig2 = YamlConfiguration.loadConfiguration(dataFile);
-  }
+		      dconfig2 = YamlConfiguration.loadConfiguration(dataFile2);
+	}
 }

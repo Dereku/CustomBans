@@ -12,6 +12,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.json.simple.parser.JSONParser;
+
+import com.google.gson.JsonParser;
 
 public class Ban implements CommandExecutor {
 
@@ -27,7 +30,7 @@ public class Ban implements CommandExecutor {
 				return true;
 			}
 			if(args.length == 0){
-				sender.sendMessage(prefix + "§7Используйте: §6/ban [ник] [причина]");
+				p.sendMessage(prefix + "§7Используйте: §6/ban [ник] [причина]");
 				return true;
 			}
 			//Бан без причины
