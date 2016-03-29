@@ -12,9 +12,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.json.simple.parser.JSONParser;
+
+import com.google.gson.JsonParser;
 
 public class Ban implements CommandExecutor {
 
+	/*
+	 * РљР»Р°СЃСЃ, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° Р±Р°РЅ.
+	 */
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -24,25 +30,29 @@ public class Ban implements CommandExecutor {
 				return true;
 			}
 			if(args.length == 0){
-				sender.sendMessage(prefix + "§7Используйте: §6/ban [ник] [причина]");
+				p.sendMessage(prefix + "В§7РСЃРїРѕР»СЊР·СѓР№С‚Рµ: В§6/ban [РЅРёРє] [РїСЂРёС‡РёРЅР°]");
 				return true;
 			}
+			//Р‘Р°РЅ Р±РµР· РїСЂРёС‡РёРЅС‹
 			if(args.length == 1){
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target.hasPermission("cbans.shield")){
-						sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+						sender.sendMessage(prefix + "В§7Р—Р°С‰РёС‰С‘РЅ РѕС‚ Р±Р°РЅР°.");
 						return true;
 					}
+					//РћС‚СЃС‹Р»Р°РµРј РёРіСЂРѕРєР°Рј СЃРѕРѕР±С‰РµРЅРёРµ.
 					for(Player pl : Bukkit.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "Не указана")));
-						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана")));
+						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "РќРµ СѓРєР°Р·Р°РЅР°")));
+						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", "РќРµ СѓРєР°Р·Р°РЅР°")));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
+						//РџСЂРѕРІРµСЂСЏРµРј, РµСЃС‚СЊ-Р»Рё РёРіСЂРѕРє РІ Р±Р°РЅР»РёСЃС‚Рµ.
 						if(!banlist.contains(target.getName().toLowerCase())){
 							banlist.add(target.getName().toLowerCase());
+						//Р•СЃР»Рё РµРіРѕ С‚Р°Рј РЅРµС‚, Р·Р°РЅРѕСЃРёРј РІ Р±Р°РЅР»РёСЃС‚.
 						CustomBans.dconfig.set("banlist", banlist);
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
-						CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", "Не указана");
+						CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", "РќРµ СѓРєР°Р·Р°РЅР°");
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".time", getDateTime());
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".permament", true);
 						CustomBans.dconfig.save(CustomBans.dataFile);
@@ -52,18 +62,17 @@ public class Ban implements CommandExecutor {
 						
 				} catch (NullPointerException e){
 					if(CustomBans.dplayers.getBoolean(args[0])){
-						sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+						sender.sendMessage(prefix + "В§7Р—Р°С‰РёС‰С‘РЅ РѕС‚ Р±Р°РЅР°.");
 						return true;
 					}
-					sender.sendMessage(prefix + "§7Игрок не найден, блокировка в оффлайн.");
 					for(Player pl : Bukkit.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", "Не указана")));
+						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", "РќРµ СѓРєР°Р·Р°РЅР°")));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(args[0].toLowerCase())){
 							banlist.add(args[0].toLowerCase());
 						CustomBans.dconfig.set("banlist", banlist);
 						CustomBans.dconfig.set(args[0].toLowerCase() + ".bannedby", p.getName());
-						CustomBans.dconfig.set(args[0].toLowerCase() + ".reason", "Не указана");
+						CustomBans.dconfig.set(args[0].toLowerCase() + ".reason", "РќРµ СѓРєР°Р·Р°РЅР°");
 						CustomBans.dconfig.set(args[0].toLowerCase() + ".time", getDateTime());
 						CustomBans.dconfig.set(args[0].toLowerCase() + ".permament", true);
 						try {
@@ -81,12 +90,13 @@ public class Ban implements CommandExecutor {
 			if(args.length < 2 ){
 				return true;
 			}
-			String reason = "Не указана.";
+			//Р‘Р°РЅ СЃ РїСЂРёС‡РёРЅРѕР№
+			String reason = "РќРµ СѓРєР°Р·Р°РЅР°.";
 			try {
 				reason = org.apache.commons.lang.StringUtils.join(args, ' ', 1, args.length);
 				Player target = Bukkit.getPlayer(args[0]);
 				if(target.hasPermission("cbans.shield")){
-					sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+					sender.sendMessage(prefix + "В§7РРіСЂРѕРє Р·Р°С‰РёС‰С‘РЅ РѕС‚ Р±Р°РЅР°.");
 					return true;
 				}
 				for(Player pl : Bukkit.getOnlinePlayers()){
@@ -107,10 +117,9 @@ public class Ban implements CommandExecutor {
 				
 			} catch (NullPointerException e2){
 				if(CustomBans.dplayers.getBoolean(args[0])){
-					sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+					sender.sendMessage(prefix + "В§7Р—Р°С‰РёС‰С‘РЅ РѕС‚ Р±Р°РЅР°.");
 					return true;
 				}
-				sender.sendMessage(prefix + "§7Игрок не найден, блокировка в оффлайн.");
 				for(Player pl : Bukkit.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");

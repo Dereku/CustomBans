@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 
 public class unBan implements CommandExecutor {
 
+	/*
+	 * Класс, отвечающий за разбан.
+	 */
 	public static String prefix = CustomBans.prefix;
 	YamlConfiguration config;
 	File dataFile;
@@ -24,6 +27,7 @@ public class unBan implements CommandExecutor {
 		this.dataFile = CustomBans.dataFile;
 	}
 	@Override
+	//Думаю, тут ничего объяснять не нужно :D
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 			Player p = (Player) sender;
 			if(!p.hasPermission("cbans.unban")){
@@ -33,13 +37,13 @@ public class unBan implements CommandExecutor {
 			config = CustomBans.dconfig;
 			dataFile = CustomBans.dataFile;
 			if(args.length == 0){
-				sender.sendMessage(prefix + "�����������: �6/unban [���]");
+				sender.sendMessage(prefix + "Используйте: §6/unban [ник]");
 				return true;
 			}
 			if(args.length == 1){
 				List<String> banlist = (List<String>) config.getStringList("banlist");
 				if(!banlist.contains(args[0].toLowerCase())){
-					sender.sendMessage(prefix + "������ ����� �� ��� �������.");
+					sender.sendMessage(prefix + "Данный игрок не забанен.");
 					return true;
 				}
 				banlist.remove(args[0].toLowerCase());

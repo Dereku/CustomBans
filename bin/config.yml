@@ -1,8 +1,0 @@
-prefix: '&7[&cCustomBans&7] '
-messages:
-    banned: '&7Администратор &c%admin% &7забанил игрока &c%banned%&7. &7Причина: &c%reason%'
-    targetmsg: '&7Вы были забанены администратром &c%admin%&7. Причина: &c%reason%'
-    noperm: '&cУ Вас не достаточно прав.'
-    unbanned: '&7Администратор &c%admin% &7разбанил игрока &c%unbanned%'
-    tempbanned: '&7Администратор &c%admin% &7забанил игрока &c%banned% &7на &c%time% &7минут. Причина: &c%reason%'
-    targettempmsg: '&7Вы временно заблокированы на этом сервере. &7Забанил: &c%admin%&7. &7Причина: &c%reason%&7. &7Время блокировки: &c%time%'

@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 
 public class unMute implements CommandExecutor {
 
+	/*
+	 * РљР»Р°СЃСЃ, РѕС‚РІРµС‡Р°СЋС‰РёР№ Р·Р° СЂР°Р·Р±Р»РѕРєРёСЂРѕРІРєСѓ РјСѓС‚Р°.
+	 */
 	public static String prefix = CustomBans.prefix;
 	YamlConfiguration config;
 	File dataFile;
@@ -24,6 +27,7 @@ public class unMute implements CommandExecutor {
 		this.dataFile = CustomBans.dataFile2;
 	}
 	@Override
+	//РўРѕР¶Рµ СЃР°РјРѕРµ)
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 			Player p = (Player) sender;
 			if(!p.hasPermission("cbans.unmute")){
@@ -33,13 +37,13 @@ public class unMute implements CommandExecutor {
 			config = CustomBans.dconfig2;
 			dataFile = CustomBans.dataFile2;
 			if(args.length == 0){
-				sender.sendMessage(prefix + "Используйте: §6/unmute [ник]");
+				sender.sendMessage(prefix + "РСЃРїРѕР»СЊР·СѓР№С‚Рµ: В§6/unmute [РЅРёРє]");
 				return true;
 			}
 			if(args.length == 1){
 				List<String> mutelist = (List<String>) config.getStringList("mutelist");
 				if(!mutelist.contains(args[0].toLowerCase())){
-					sender.sendMessage(prefix + "Данный игрок не был замутен.");
+					sender.sendMessage(prefix + "РРіСЂРѕРє РЅРµ Р±С‹Р» РІ РјСѓС‚Рµ.");
 					return true;
 				}
 				mutelist.remove(args[0].toLowerCase());

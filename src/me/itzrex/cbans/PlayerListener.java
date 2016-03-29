@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -17,6 +18,9 @@ import org.bukkit.plugin.Plugin;
 
 public class PlayerListener implements Listener {
 
+	/*
+	 * РЎР»СѓС€Р°С‚РµР»СЊ РёРіСЂРѕРєРѕРІ РЅР°: Р±Р°РЅС‹, РІСЂРµРјРµРЅС‹Рµ Р±Р°РЅС‹, РјСѓС‚С‹, РІСЂРµРјРµРЅРЅС‹Р№ РјСѓС‚С‹
+	 */
 	@EventHandler
 	public void onJoin(PlayerLoginEvent e) throws IOException{
 		Player p = e.getPlayer();
@@ -24,14 +28,22 @@ public class PlayerListener implements Listener {
 		if(CustomBans.dplayers.getBoolean(p.getName())){
 			return;
 		}
+		//РџСЂРѕРІРµСЂСЏРµРј, РµСЃС‚СЊ-Р»Рё РёРіСЂРѕРє РІ Р±Р°РЅР»РёСЃС‚Рµ.
 		if(banlist.contains(p.getName().toLowerCase())){
+			//РџСЂРѕРІРµСЂСЏРµРј, Р·Р°Р±Р°РЅРµРЅ-Р»Рё РёРіСЂРѕРє РЅР°РІСЃРµРіРґР° (РїРµСЂРјР°РјРµРЅС‚).
 			if(CustomBans.dconfig.getBoolean(p.getName().toLowerCase() + ".permament")){
+				//Р”РѕСЃС‚Р°С‘Рј РїСЂРёС‡РёРЅСѓ Р±Р°РЅР°
 				String reason = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".reason");
+				//Р”РѕСЃС‚Р°С‘Рј РІСЂРµРјСЏ Р±Р°РЅР°.
 				String time = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".time");
+				//Р”РѕСЃС‚Р°С‘Рј РЅРёРє РёРіСЂРѕРєР° РєРѕС‚РѕСЂС‹Р№ Р·Р°Р±Р°РЅРёР».
 				String bannedby = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".bannedby");
 				e.getResult();
-				e.disallow(PlayerLoginEvent.Result.KICK_OTHER, "§cВы были заблокированы на этом сервере.\nЗабанил: §6" + bannedby + "\n§cВремя: §6" + time + "\n§cПричина: §6" + reason);
+				//РљРёРєР°РµРј РµРіРѕ СЃ СЃРѕРѕР±С‰РµРЅРёРµРј:
+				e.disallow(PlayerLoginEvent.Result.KICK_OTHER, "В§cР’С‹ Р±С‹Р»Рё Р·Р°Р±Р°РЅРµРЅС‹.\nР—Р°Р±Р°РЅРёР»: В§6" + bannedby + "\nВ§cР’СЂРµРјСЏ: В§6" + time + "\nВ§cРџСЂРёС‡РёРЅР°: В§6" + reason);
+				//Р•СЃР»Рё-Р¶Рµ РёРіСЂРѕРє РІСЂРµРјРµРЅРЅРѕ Р·Р°Р±Р°РЅРµРЅ, РїРёС€РµРј:
 			} else if(!CustomBans.dconfig.getBoolean(e.getPlayer().getName().toLowerCase() + ".permament")){
+				//Р”РѕСЃС‚Р°С‘Рј РєР°Р»РµРЅРґР°СЂРЅС‹Рµ РґР°РЅРЅС‹Рµ.
 		        Integer day_of_year = Integer.valueOf(Calendar.getInstance().get(6));
 		        Integer hour = Integer.valueOf(Calendar.getInstance().get(11));
 		        Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
@@ -39,27 +51,35 @@ public class PlayerListener implements Listener {
 		        Integer banLasts = Integer.valueOf(CustomBans.dconfig.getInt(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".lasts"));
 		        Integer bansTime = Integer.valueOf(CustomBans.dconfig.getInt(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".bans-time"));
 		        Boolean unbanned = false;
+		        //Р•СЃР»Рё, РІСЂРµРјСЏ Р±Р°РЅР° РёСЃС‚РµРєР»Рѕ, С‚Рѕ СЃС‚Р°РІРёРј Р±СѓР»РµРІРѕРµ Р·РЅР°С‡РµРЅРёРµ "unbanned" РЅР° "true"
 		        if (currentMin.intValue() - banLasts.intValue() > bansTime.intValue()) {
 		            unbanned = Boolean.valueOf(true);
 		          }
+		        //РџРѕР»СѓС‡Р°РµРј РјРёРЅСѓС‚С‹, С‡РµСЂРµР· РёСЃС‚РµС‡РµРЅРёРµ РєР°РєРѕР№, Р±СѓРґРµС‚ СЂР°Р·Р±Р°РЅРµРЅ РёРіСЂРѕРє
 		        Integer towait = Integer.valueOf(bansTime.intValue() - (currentMin.intValue() - banLasts.intValue()));
+		        //Р•СЃР»Рё РІСЂРµРјСЏ РёСЃС‚РµРєР»Рѕ:
 		        if (unbanned.booleanValue())
 		        {
+		        	//РЈРґР°Р»СЏРµРј РµРіРѕ СЃ Р±Р°РЅР»РёСЃС‚Р°
 		        	banlist.remove(e.getPlayer().getName().toLowerCase());
 		        	CustomBans.dconfig.set("banlist", banlist);
 		        	CustomBans.dconfig.save(CustomBans.dataFile);
+		        	//Р’ РґСЂСѓРіРѕРј СЃР»СѓС‡Р°Рµ:
 		        } else {
 					String reason = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".reason");
 					String time = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".time");
 					String bannedby = CustomBans.dconfig.getString(p.getName().toLowerCase() + ".bannedby");
 					e.getResult();
-					e.disallow(PlayerLoginEvent.Result.KICK_OTHER, "§cВы были временно заблокированы на этом сервере.\nЗабанил: §6" + bannedby + "\n§cВремя: §6" + time + "\n§cПричина: §6" + reason + "\n§cОкончание блокировки через §6" + towait + " §cминут." );
+					e.disallow(PlayerLoginEvent.Result.KICK_OTHER, "В§cР’С‹ РІСЂРµРјРµРЅРЅРѕ Р·Р°Р±Р°РЅРµРЅС‹.\nР—Р°Р±Р°РЅРёР»: В§6" + bannedby + "\nВ§cР’СЂРµРјСЏ: В§6" + time + "\nВ§cРџСЂРёС‡РёРЅР°: В§6" + reason + "\nВ§cРћСЃС‚Р°Р»РѕСЃСЊ РґРѕ РєРѕРЅС†Р° В§6" + towait + " В§cРјРёРЅСѓС‚." );
 		        }
 			}
 		}
+		//РџСЂРѕРІРµСЂРєР° РёРіСЂРѕРєР° РЅР° OP РёР»Рё РїСЂР°РІРѕ "cbans.shield"
+		//Р•СЃР»Рё РѕРЅ РёРјРµРµС‚ СЌС‚Рѕ РїСЂР°РІРѕ.
 		if(p.hasPermission("cbans.shield")){
 			CustomBans.dplayers.set(p.getName(), true);
 			CustomBans.dplayers.save(CustomBans.players);
+			//Р’ РґСЂСѓРіРѕРј СЃР»СѓС‡Р°Рµ:
 		} else {
 			CustomBans.dplayers.set(p.getName(), false);
 			CustomBans.dplayers.save(CustomBans.players);
@@ -67,14 +87,15 @@ public class PlayerListener implements Listener {
 	}
     @EventHandler
     public void onChat(final AsyncPlayerChatEvent e) {
+    	//РЎР»СѓС€Р°С‚РµР»СЊ С‡Р°С‚Р°, СЃРїР°СЃРёР±Рѕ Р·Р° СЌС‚Рѕ  @Slavik123123123
         if (CustomBans.dconfig2.getStringList("mutelist").contains(e.getPlayer().getName().toLowerCase())) {
             final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permament");
             if (permanent) {
-                e.getPlayer().sendMessage(ChatColor.RED + "Вы не можете писать в чат, так как он отключён для вас.");
-                e.getPlayer().sendMessage("Ваш чат заблокировал:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
-                e.getPlayer().sendMessage("Причина блокировки:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".reason"));
-                e.getPlayer().sendMessage("Время блокировки:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutes-time"));
-                e.getPlayer().sendMessage("До окончания: " + ChatColor.RED + "неогр.");
+                e.getPlayer().sendMessage(ChatColor.RED + "Р’С‹ Р·Р°РіР»СѓС€РµРЅС‹.");
+                e.getPlayer().sendMessage("Р’Р°СЃ Р·Р°Р±Р»РѕРєРёСЂРѕРІР°Р»:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
+                e.getPlayer().sendMessage("РџСЂРёС‡РёРЅР°:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".reason"));
+                e.getPlayer().sendMessage("Р’СЂРµРјСЏ РјСѓС‚Р°:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutes-time"));
+                e.getPlayer().sendMessage("Р”Рѕ РєРѕРЅС†Р°: " + ChatColor.RED + "РЅРµРѕРіСЂ.");
                 e.setCancelled(true);
             }
             else {
@@ -99,14 +120,14 @@ public class PlayerListener implements Listener {
                     catch (IOException e2) {
                         e2.printStackTrace();
                     }
-                    e.getPlayer().sendMessage(ChatColor.GREEN + "Ваш чат был разблокирован.");
+                    e.getPlayer().sendMessage(ChatColor.GREEN + "Р’Р°С€ С‡Р°С‚ СЂР°Р·Р±Р»РѕРєРёСЂРѕРІР°РЅ.");
                 }
                 else {
-                    e.getPlayer().sendMessage(ChatColor.RED + "Вы не можете писать в чат, так как он отключён для вас.");
-                    e.getPlayer().sendMessage("Ваш чат заблокировал: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
-                    e.getPlayer().sendMessage("Причина блокировки: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".reason"));
-                    e.getPlayer().sendMessage("Время блокировки: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutes-time"));
-                    e.getPlayer().sendMessage("До окончания: " + ChatColor.RED + towait + " минут.");
+                    e.getPlayer().sendMessage(ChatColor.RED + "Р’С‹ Р±С‹Р»Рё РІСЂРµРјРµРЅРЅРѕ Р·Р°РіР»СѓС€РµРЅС‹");
+                    e.getPlayer().sendMessage("Р’Р°СЃ Р·Р°Р±Р»РѕРєРёСЂРѕРІР°Р» " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
+                    e.getPlayer().sendMessage("РџСЂРёС‡РёРЅР°: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".reason"));
+                    e.getPlayer().sendMessage("Р’СЂРµРјСЏ РјСѓС‚Р°: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutes-time"));
+                    e.getPlayer().sendMessage("Р”Рѕ РєРѕРЅС†Р°: " + ChatColor.RED + towait + "РјРёРЅСѓС‚.");
                     e.setCancelled(true);
                 }
             }
@@ -114,6 +135,7 @@ public class PlayerListener implements Listener {
     }
     @EventHandler
     public void onCommandWhileMuted(final PlayerCommandPreprocessEvent e) {
+    	//Р—Р°РїСЂРµС‚ РєРѕРјР°РЅРґ РІРѕ РІСЂРµРјСЏ РјСѓС‚Р°, РєРѕС‚РѕСЂС‹Рµ Р·Р°РїСЂРµС‰С‘РЅРЅС‹Рµ РІ РєРѕРЅС„РёРіРµ.
                 if (CustomBans.dconfig2.getStringList("mutelist").contains(e.getPlayer().getName().toLowerCase())) {
                     final String message = e.getMessage();
                     final String[] split = message.split(" ");
@@ -122,11 +144,11 @@ public class PlayerListener implements Listener {
                     }
                     final Boolean permanent = CustomBans.dconfig2.getBoolean(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".permament");
                     if (permanent) {
-                        e.getPlayer().sendMessage(ChatColor.RED + "Вы не можете писать в чат, так как он отключён для вас.");
-                        e.getPlayer().sendMessage("Ваш чат заблокировал:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
-                        e.getPlayer().sendMessage("Причина блокировки:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".reason"));
-                        e.getPlayer().sendMessage("Время блокировки:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutes-time"));
-                        e.getPlayer().sendMessage("До окончания: " + ChatColor.RED + "неогр.");
+                        e.getPlayer().sendMessage(ChatColor.RED + "Р’С‹ Р·Р°РіР»СѓС€РµРЅС‹.");
+                        e.getPlayer().sendMessage("Р’Р°СЃ Р·Р°Р±Р»РѕРєРёСЂРѕРІР°Р»:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
+                        e.getPlayer().sendMessage("РџСЂРёС‡РёРЅР°:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".reason"));
+                        e.getPlayer().sendMessage("Р’СЂРµРјСЏ РјСѓС‚Р°:" + ChatColor.RED + " " + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutes-time"));
+                        e.getPlayer().sendMessage("Р”Рѕ РєРѕРЅС†Р°: " + ChatColor.RED + "РЅРµРѕРіСЂ.");
                         e.setCancelled(true);
                     }
                     else {
@@ -151,21 +173,26 @@ public class PlayerListener implements Listener {
                             catch (IOException e1) {
                                 e1.printStackTrace();
                             }
-                            e.getPlayer().sendMessage(ChatColor.GREEN + "Ваш чат был разблокирован.");
+                            e.getPlayer().sendMessage(ChatColor.GREEN + "Р’Р°С€ С‡Р°С‚ СЂР°Р·Р±Р»РѕРєРёСЂРѕРІР°РЅ.");
                         }
                         else {
-                            e.getPlayer().sendMessage(ChatColor.RED + "Вы не можете писать в чат, так как он отключён для вас.");
-                            e.getPlayer().sendMessage("Ваш чат заблокировал: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
-                            e.getPlayer().sendMessage("Причина блокировки: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".reason"));
-                            e.getPlayer().sendMessage("Время блокировки: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutes-time"));
-                            e.getPlayer().sendMessage("До окончания: " + ChatColor.RED + towait + " минут.");
+                            e.getPlayer().sendMessage(ChatColor.RED + "Р’С‹ Р±С‹Р»Рё РІСЂРµРјРµРЅРЅРѕ Р·Р°РіР»СѓС€РµРЅС‹");
+                            e.getPlayer().sendMessage("Р’Р°СЃ Р·Р°Р±Р»РѕРєРёСЂРѕРІР°Р» " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutedby"));
+                            e.getPlayer().sendMessage("РџСЂРёС‡РёРЅР°: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".reason"));
+                            e.getPlayer().sendMessage("Р’СЂРµРјСЏ РјСѓС‚Р°: " + ChatColor.RED + CustomBans.dconfig2.getString(String.valueOf(e.getPlayer().getName().toLowerCase()) + ".mutes-time"));
+                            e.getPlayer().sendMessage("Р”Рѕ РєРѕРЅС†Р°: " + ChatColor.RED + towait + "РјРёРЅСѓС‚.");
                             e.setCancelled(true);
                         }
                     }
                 }
     }
     
-    
+    @EventHandler
+    public void onClick(InventoryClickEvent e){
+    	if(e.getInventory().getTitle().equals("РРЅС„РѕСЂРјР°С†РёСЏ")){
+    		e.setCancelled(true);
+    	}
+    }
 }
 
 
