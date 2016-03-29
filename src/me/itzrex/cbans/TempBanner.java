@@ -16,8 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TempBanner implements CommandExecutor {
-    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
-
+    
 	/*
 	 * Класс, отвечающий за временный бан.
 	 */
@@ -44,7 +43,8 @@ public class TempBanner implements CommandExecutor {
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "Не указана")).replace("%time%", args[1]));
 					}
-						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана").replace("%time%", args[1])));
+					CustomBans.geInstance().getLogger().info("Player " + target.getName() + " tempbanned for " + args[1] + " minutes.");
+					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана").replace("%time%", args[1])));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(target.getName().toLowerCase())){
 							banlist.add(target.getName().toLowerCase());
@@ -75,6 +75,7 @@ public class TempBanner implements CommandExecutor {
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", "Не указана")).replace("%time%", args[1]));
 					}
+					CustomBans.geInstance().getLogger().info("Player " + args[0] + " tempbanned for " + args[1] + " minutes.");
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(args[0].toLowerCase())){
 							banlist.add(args[0].toLowerCase());
@@ -97,7 +98,7 @@ public class TempBanner implements CommandExecutor {
 					}
 					
 				} catch (NumberFormatException e) {
-					p.sendMessage(prefix + "§cНеверно введено время бана.");
+					sender.sendMessage(prefix + "§cНеверно введено время бана.");
 				}
 			}
 			//Временный бан с причиной
@@ -113,6 +114,7 @@ public class TempBanner implements CommandExecutor {
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", reason)).replace("%time%", args[1]));
 				}
+				CustomBans.geInstance().getLogger().info("Player " + target.getName() + " tempbanned for " + args[1] + " minutes.");
 					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", reason).replace("%time%", args[1])));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
 					if(!banlist.contains(target.getName())){
@@ -140,6 +142,7 @@ public class TempBanner implements CommandExecutor {
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
 				}
+				CustomBans.geInstance().getLogger().info("Player " + args[0] + " tempbanned for " + args[1] + " minutes.");
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
 					if(!banlist.contains(args[0].toLowerCase())){
 						banlist.add(args[0].toLowerCase());

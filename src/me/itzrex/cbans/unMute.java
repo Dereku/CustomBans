@@ -13,7 +13,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class unMute implements CommandExecutor {
-    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 
 	/*
 	 * Класс, отвечающий за разблокировку мута.
@@ -50,6 +49,8 @@ public class unMute implements CommandExecutor {
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unmuted").replace("%admin%", p.getName()).replace("%unmuted%", args[0])));
 				}
+				CustomBans.geInstance().getLogger().info("Player " + args[0] + " unmuted.");
+
 				config.set("mutelist", mutelist);
 				try {
 					config.save(dataFile);

@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Kick implements CommandExecutor {
-    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 
 	/*
 	 * Класс, отвечающий за кик.
@@ -35,9 +34,10 @@ public class Kick implements CommandExecutor {
 					}
 					//Отправляем сообщение игрокам.
 					for(Player pl : Utils.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", "�� �������")));
-						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg").replace("%admin%", p.getName()).replace("%reason%", "�� �������")));
+						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", "Не указана")));
+						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана")));
 				}
+					CustomBans.geInstance().getLogger().info("Player " + target.getName() + " kicked.");
 						
 				} catch (NullPointerException e){
 					sender.sendMessage(prefix + "§7Игрок не онлайн.");
@@ -61,6 +61,7 @@ public class Kick implements CommandExecutor {
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", reason)));
 					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg").replace("%admin%", p.getName()).replace("%reason%", reason)));
+					CustomBans.geInstance().getLogger().info("Player " + target.getName() + " kicked.");
 					return true;
 			}
 				

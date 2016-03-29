@@ -11,7 +11,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class Checker implements CommandExecutor {
-    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 	/*
 	 * Класс, отвечающий за проверку бана.
 	 */
@@ -20,12 +19,12 @@ public class Checker implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if((sender instanceof Player)){
 			CommandSender p = sender;
-			if(!p.hasPermission("cbans.check")){
-				p.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
+			if(!sender.hasPermission("cbans.check")){
+				sender.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
 				return false;
 			}
 			if(args.length == 0){
-				p.sendMessage(prefix + "§7Используйте: §6/checkban [ник]");
+				sender.sendMessage(prefix + "§7Используйте: §6/checkban [ник]");
 				return false;
 			}
 			if(args.length == 1){
@@ -37,13 +36,13 @@ public class Checker implements CommandExecutor {
 					String reason = CustomBans.dconfig.getString(args[0].toLowerCase() + ".reason");
 					String time = CustomBans.dconfig.getString(args[0].toLowerCase() + ".time");
 					String bannedby = CustomBans.dconfig.getString(args[0].toLowerCase() + ".bannedby");
-					p.sendMessage("§7Информация о игроке: §c" + args[0]);
-					p.sendMessage("§7Причина: §c" + reason);
-					p.sendMessage("§7Время бана: §c" + time);
-					p.sendMessage("§7Забанил §c" + bannedby);
+					sender.sendMessage("§7Информация о игроке: §c" + args[0]);
+					sender.sendMessage("§7Причина: §c" + reason);
+					sender.sendMessage("§7Время бана: §c" + time);
+					sender.sendMessage("§7Забанил §c" + bannedby);
 					return false;
 		        } else {
-		        	p.sendMessage(prefix + "§7Игрок не забанен.");
+		        	sender.sendMessage(prefix + "§7Игрок не забанен.");
 		        	return false;
 		        }
 			}

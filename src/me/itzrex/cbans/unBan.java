@@ -50,6 +50,7 @@ public class unBan implements CommandExecutor {
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unbanned").replace("%admin%", p.getName()).replace("%unbanned%", args[0])));
 				}
+				CustomBans.geInstance().getLogger().info("Player " + args[0] + " unbanned.");
 				config.set("banlist", banlist);
 				try {
 					config.save(dataFile);

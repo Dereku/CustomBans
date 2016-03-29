@@ -8,7 +8,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class Maincmd implements CommandExecutor {
-    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 
 	/*
 	 * Класс, отвечающий за дополнительный команды (иначе не объяснить).
