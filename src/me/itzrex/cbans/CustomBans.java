@@ -10,7 +10,6 @@ import me.itzrex.cbans.inv.InvCmd;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.MetricsLite;
 
 public class CustomBans extends JavaPlugin {
 
@@ -48,11 +47,6 @@ public class CustomBans extends JavaPlugin {
 		//Создаём файлы bans.yml, mutes.yml, players.yml
 		createFiles();
 		//Достаём команды.
-		try {
-			new MetricsLite(this).start();
-		} catch (IOException e){
-			e.printStackTrace();
-		}
 		getCommand("kick").setExecutor(new Kick());
 		getCommand("ban").setExecutor(new Ban());
 		getCommand("mute").setExecutor(new Mute());
