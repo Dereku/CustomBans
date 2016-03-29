@@ -12,19 +12,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.json.simple.parser.JSONParser;
-
-import com.google.gson.JsonParser;
-
+import me.itzrex.cbans.Utils;
 public class Ban implements CommandExecutor {
-
+    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 	/*
 	 * Класс, отвечающий за бан.
 	 */
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-			Player p = (Player) sender;
+			CommandSender p = sender;
 			if(!p.hasPermission("cbans.ban")){
 				p.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
 				return true;
@@ -42,7 +39,7 @@ public class Ban implements CommandExecutor {
 						return true;
 					}
 					//Отсылаем игрокам сообщение.
-					for(Player pl : Bukkit.getOnlinePlayers()){
+					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "Не указана")));
 						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана")));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
@@ -65,7 +62,7 @@ public class Ban implements CommandExecutor {
 						sender.sendMessage(prefix + "§7Защищён от бана.");
 						return true;
 					}
-					for(Player pl : Bukkit.getOnlinePlayers()){
+					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", "Не указана")));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(args[0].toLowerCase())){
@@ -99,7 +96,7 @@ public class Ban implements CommandExecutor {
 					sender.sendMessage(prefix + "§7Игрок защищён от бана.");
 					return true;
 				}
-				for(Player pl : Bukkit.getOnlinePlayers()){
+				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", reason)));
 					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", reason)));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
@@ -120,7 +117,7 @@ public class Ban implements CommandExecutor {
 					sender.sendMessage(prefix + "§7Защищён от бана.");
 					return true;
 				}
-				for(Player pl : Bukkit.getOnlinePlayers()){
+				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
 					if(!banlist.contains(args[0].toLowerCase())){

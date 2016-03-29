@@ -12,7 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 
 public class InvCmd implements CommandExecutor {
@@ -32,7 +31,7 @@ public class InvCmd implements CommandExecutor {
 		}
 		if(args.length == 1){
 			List<String> banlist = CustomBans.dconfig.getStringList("banlist");
-			if(!banlist.contains(args[0])){
+			if(!banlist.contains(args[0].toLowerCase())){
 				p.sendMessage(prefix + "Игрок не был забанен");
 				return true;
 			}
@@ -41,10 +40,10 @@ public class InvCmd implements CommandExecutor {
 			i.setName("§c" + args[0]);
 			i.setData(3);
 			i.setSkullOwner(args[0]);
-			i.addLore("§7Забанил: §c" + CustomBans.dconfig.getString(args[0] + ".bannedby"));
-			i.addLore("§7Причина: §c" + CustomBans.dconfig.getString(args[0] + ".reason"));
-			i.addLore("§7Дата бана: §c" + CustomBans.dconfig.getString(args[0] + ".time"));
-			i.addLore("§7(Пермамент - " + (CustomBans.dconfig.getBoolean((args[0]) + ".permament") ? "§aДа§7)" : "§cНет§7)"));
+			i.addLore("§7Забанил: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".bannedby"));
+			i.addLore("§7Причина: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".reason"));
+			i.addLore("§7Дата бана: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".time"));
+			i.addLore("§7(Пермамент - " + (CustomBans.dconfig.getBoolean((args[0].toLowerCase()) + ".permament") ? "§aДа§7)" : "§cНет§7)"));
 			inv.setItem(4, i.getItem());
 			p.openInventory(inv);
 		}

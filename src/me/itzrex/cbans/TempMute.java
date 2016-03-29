@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class TempMute implements CommandExecutor {
+    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 
 	/*
 	 * Класс, отвечающий за временный мут.
@@ -23,7 +24,7 @@ public class TempMute implements CommandExecutor {
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-			Player p = (Player) sender;
+		CommandSender p = sender;
 			if(!p.hasPermission("cbans.tempmute")){
 				p.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
 				return true;
@@ -40,7 +41,7 @@ public class TempMute implements CommandExecutor {
 						sender.sendMessage(prefix + "§7Игрок защищен от мута.");
 						return true;
 					}
-					for(Player pl : Bukkit.getOnlinePlayers()){
+					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", target.getName()).replace("%reason%", "Не указана")).replace("%time%", args[1]));
 						List<String> mutelist = (List<String>)CustomBans.dconfig2.getStringList("mutelist");
 						if(!mutelist.contains(target.getName().toLowerCase())){
@@ -71,7 +72,7 @@ public class TempMute implements CommandExecutor {
 						sender.sendMessage(prefix + "§7Игрок защищен от мута.");
 						return true;
 					}
-					for(Player pl : Bukkit.getOnlinePlayers()){
+					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", args[0]).replace("%reason%", "Не указана")).replace("%time%", args[1]));
 						List<String> mutelist = (List<String>)CustomBans.dconfig2.getStringList("mutelist");
 						if(!mutelist.contains(args[0].toLowerCase())){
@@ -109,7 +110,7 @@ public class TempMute implements CommandExecutor {
 					sender.sendMessage(prefix + "§7Игрок защищён от мута.");
 					return true;
 				}
-				for(Player pl : Bukkit.getOnlinePlayers()){
+				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", target.getName()).replace("%reason%", reason)).replace("%time%", args[1]));
 					List<String> mutelist = (List<String>) CustomBans.dconfig2.getStringList("mutelist");
 					if(!mutelist.contains(target.getName().toLowerCase())){
@@ -135,7 +136,7 @@ public class TempMute implements CommandExecutor {
 					sender.sendMessage(prefix + "§7Игрок защищён от мута.");
 					return true;
 				}
-				for(Player pl : Bukkit.getOnlinePlayers()){
+				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
 					List<String> mutelist = (List<String>) CustomBans.dconfig2.getStringList("mutelist");
 					if(!mutelist.contains(args[0].toLowerCase())){

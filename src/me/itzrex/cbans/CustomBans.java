@@ -12,8 +12,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
-import com.google.gson.Gson;
-
 public class CustomBans extends JavaPlugin {
 
 	public static CustomBans plugin;

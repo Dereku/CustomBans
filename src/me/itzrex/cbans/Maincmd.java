@@ -6,9 +6,9 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class Maincmd implements CommandExecutor {
+    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 
 	/*
 	 * Класс, отвечающий за дополнительный команды (иначе не объяснить).
@@ -17,7 +17,7 @@ public class Maincmd implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if(args.length == 0){
-		Player p = (Player) sender;
+			CommandSender p = sender;
 		if(!p.hasPermission("cbans.cmd")){
 			sender.sendMessage(prefix + "§cНет прав");
 			return false;
