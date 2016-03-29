@@ -43,6 +43,7 @@ public class TempBanner implements CommandExecutor {
 					}
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "Не указана")).replace("%time%", args[1]));
+					}
 						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана").replace("%time%", args[1])));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(target.getName().toLowerCase())){
@@ -61,12 +62,10 @@ public class TempBanner implements CommandExecutor {
 						try {
 							CustomBans.dconfig.save(CustomBans.dataFile);
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						return true;
 					}
-				}
 						
 				} catch (NullPointerException e){
 					if(CustomBans.dplayers.getBoolean(args[0])){
@@ -75,6 +74,7 @@ public class TempBanner implements CommandExecutor {
 					}
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", "Не указана")).replace("%time%", args[1]));
+					}
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(args[0].toLowerCase())){
 							banlist.add(args[0].toLowerCase());
@@ -95,7 +95,6 @@ public class TempBanner implements CommandExecutor {
 							e1.printStackTrace();
 						}
 					}
-				}
 					
 				} catch (NumberFormatException e) {
 					p.sendMessage(prefix + "§cНеверно введено время бана.");
@@ -113,6 +112,7 @@ public class TempBanner implements CommandExecutor {
 				}
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", reason)).replace("%time%", args[1]));
+				}
 					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", reason).replace("%time%", args[1])));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
 					if(!banlist.contains(target.getName())){
@@ -131,7 +131,6 @@ public class TempBanner implements CommandExecutor {
 		            CustomBans.dconfig.save(CustomBans.dataFile);
 					return true;
 				}
-			}
 				
 			} catch (NullPointerException e2){
 				if(CustomBans.dplayers.getBoolean(args[0])){
@@ -140,6 +139,7 @@ public class TempBanner implements CommandExecutor {
 				}
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
+				}
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
 					if(!banlist.contains(args[0].toLowerCase())){
 						banlist.add(args[0].toLowerCase());
@@ -157,9 +157,7 @@ public class TempBanner implements CommandExecutor {
 		            try {
 						CustomBans.dconfig.save(CustomBans.dataFile);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
 					}
 				}
 			} catch (IOException e) {

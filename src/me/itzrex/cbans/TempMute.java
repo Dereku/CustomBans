@@ -43,6 +43,7 @@ public class TempMute implements CommandExecutor {
 					}
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", target.getName()).replace("%reason%", "Не указана")).replace("%time%", args[1]));
+					}
 						List<String> mutelist = (List<String>)CustomBans.dconfig2.getStringList("mutelist");
 						if(!mutelist.contains(target.getName().toLowerCase())){
 							mutelist.add(target.getName().toLowerCase());
@@ -60,11 +61,9 @@ public class TempMute implements CommandExecutor {
 						try {
 							CustomBans.dconfig2.save(CustomBans.dataFile2);
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						return true;
-					}
 				}
 						
 				} catch (NullPointerException e){
@@ -74,6 +73,7 @@ public class TempMute implements CommandExecutor {
 					}
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", args[0]).replace("%reason%", "Не указана")).replace("%time%", args[1]));
+					}
 						List<String> mutelist = (List<String>)CustomBans.dconfig2.getStringList("mutelist");
 						if(!mutelist.contains(args[0].toLowerCase())){
 							mutelist.add(args[0].toLowerCase());
@@ -93,7 +93,6 @@ public class TempMute implements CommandExecutor {
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-					}
 				}
 					
 				} catch (NumberFormatException e) {
@@ -112,6 +111,7 @@ public class TempMute implements CommandExecutor {
 				}
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", target.getName()).replace("%reason%", reason)).replace("%time%", args[1]));
+				}
 					List<String> mutelist = (List<String>) CustomBans.dconfig2.getStringList("mutelist");
 					if(!mutelist.contains(target.getName().toLowerCase())){
 						mutelist.add(target.getName().toLowerCase());
@@ -129,7 +129,6 @@ public class TempMute implements CommandExecutor {
 		            CustomBans.dconfig2.save(CustomBans.dataFile2);
 					return true;
 				}
-			}
 				
 			} catch (NullPointerException e2){
 				if(CustomBans.dplayers.getBoolean(args[0])){
@@ -138,6 +137,7 @@ public class TempMute implements CommandExecutor {
 				}
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", p.getName()).replace("%muted%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
+				}
 					List<String> mutelist = (List<String>) CustomBans.dconfig2.getStringList("mutelist");
 					if(!mutelist.contains(args[0].toLowerCase())){
 						mutelist.add(args[0].toLowerCase());
@@ -159,7 +159,6 @@ public class TempMute implements CommandExecutor {
 						e.printStackTrace();
 					}
 					}
-				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

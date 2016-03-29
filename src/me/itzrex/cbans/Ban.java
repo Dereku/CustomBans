@@ -41,6 +41,7 @@ public class Ban implements CommandExecutor {
 					//Отсылаем игрокам сообщение.
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", "Не указана")));
+					}
 						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", "Не указана")));
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						//Проверяем, есть-ли игрок в банлисте.
@@ -55,7 +56,6 @@ public class Ban implements CommandExecutor {
 						CustomBans.dconfig.save(CustomBans.dataFile);
 						return true;
 					}
-				}
 						
 				} catch (NullPointerException e){
 					if(CustomBans.dplayers.getBoolean(args[0])){
@@ -64,6 +64,7 @@ public class Ban implements CommandExecutor {
 					}
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", "Не указана")));
+					}
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(args[0].toLowerCase())){
 							banlist.add(args[0].toLowerCase());
@@ -78,7 +79,6 @@ public class Ban implements CommandExecutor {
 							e1.printStackTrace();
 						}
 					}
-				}
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -98,6 +98,7 @@ public class Ban implements CommandExecutor {
 				}
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", reason)));
+				}
 					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", reason)));
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
 					if(!banlist.contains(target.getName().toLowerCase())){
@@ -110,7 +111,6 @@ public class Ban implements CommandExecutor {
 					CustomBans.dconfig.save(CustomBans.dataFile);
 					return true;
 				}
-			}
 				
 			} catch (NullPointerException e2){
 				if(CustomBans.dplayers.getBoolean(args[0])){
@@ -119,6 +119,7 @@ public class Ban implements CommandExecutor {
 				}
 				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)));
+				}
 					List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
 					if(!banlist.contains(args[0].toLowerCase())){
 						banlist.add(args[0].toLowerCase());
@@ -133,7 +134,6 @@ public class Ban implements CommandExecutor {
 						e.printStackTrace();
 					}
 					}
-				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
