@@ -43,7 +43,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
 
-import me.itzrex.cbans.Utils;
+import me.itzrex.cbans.utils.VersionUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -287,7 +287,7 @@ public class MetricsLite {
         boolean onlineMode = Bukkit.getServer().getOnlineMode(); // TRUE if online mode is enabled
         String pluginVersion = description.getVersion();
         String serverVersion = Bukkit.getVersion();
-        int playersOnline = Utils.getOnlinePlayers().size();
+        int playersOnline = VersionUtils.getOnlinePlayers().size();
 
         // END server software specific section -- all code below does not use any code outside of this class / Java
 

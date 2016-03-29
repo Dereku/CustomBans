@@ -1,9 +1,9 @@
 package me.itzrex.cbans.inv;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.itzrex.cbans.CustomBans;
+import me.itzrex.cbans.utils.Item;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,8 +13,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 public class InvCmd implements CommandExecutor {
 
@@ -38,18 +36,15 @@ public class InvCmd implements CommandExecutor {
 				return true;
 			}
 			Inventory inv = Bukkit.createInventory(null, 9, "Информация");
-			ItemStack i2 = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-			SkullMeta meta = (SkullMeta) i2.getItemMeta();
-			meta.setOwner(args[0]);
-			meta.setDisplayName("§c" + args[0]);
-			ArrayList<String> lore = new ArrayList<String>();
-			lore.add("§7Забанил: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".bannedby"));
-			lore.add("§7Причина: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".reason"));
-			lore.add("§7Дата бана: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".time"));
-			lore.add("§7(Пермамент - " + (CustomBans.dconfig.getBoolean((args[0].toLowerCase()) + ".permament") ? "§aДа§7)" : "§cНет§7)"));
-			meta.setLore(lore);
-			i2.setItemMeta(meta);
-			inv.setItem(4, i2);
+			Item i = new Item(Material.SKULL_ITEM);
+			i.setName("§c" + args[0]);
+			i.setData(3);
+			i.setSkullOwner(args[0]);
+			i.addLore("§7Забанил: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".bannedby"));
+			i.addLore("§7Причина: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".reason"));
+			i.addLore("§7Дата бана: §c" + CustomBans.dconfig.getString(args[0].toLowerCase() + ".time"));
+			i.addLore("§7(Пермамент - " + (CustomBans.dconfig.getBoolean((args[0].toLowerCase()) + ".permament") ? "§aДа§7)" : "§cНет§7)"));
+			inv.setItem(4, i.getItem());
 			p.openInventory(inv);
 		}
 		return false;
