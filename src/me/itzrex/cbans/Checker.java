@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class Checker implements CommandExecutor {
-
+    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 	/*
 	 * Класс, отвечающий за проверку бана.
 	 */
@@ -19,7 +19,7 @@ public class Checker implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if((sender instanceof Player)){
-			Player p = (Player) sender;
+			CommandSender p = sender;
 			if(!p.hasPermission("cbans.check")){
 				p.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
 				return false;

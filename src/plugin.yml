@@ -1,6 +1,6 @@
 name: CustomBans
 main: me.itzrex.cbans.CustomBans
-version: 0.2
+version: 0.3
 description: Custom plugin for bans players.
 author: itzRex
 load: STARTUP
@@ -15,3 +15,4 @@ commands:
     mute:
     unmute:
     tempmute:
+    baninv:

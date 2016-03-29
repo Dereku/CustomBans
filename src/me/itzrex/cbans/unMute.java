@@ -6,7 +6,6 @@ import java.util.List;
 
 import net.md_5.bungee.api.ChatColor;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class unMute implements CommandExecutor {
+    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 
 	/*
 	 * Класс, отвечающий за разблокировку мута.
@@ -29,7 +29,7 @@ public class unMute implements CommandExecutor {
 	@Override
 	//Тоже самое)
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-			Player p = (Player) sender;
+		CommandSender p = sender;
 			if(!p.hasPermission("cbans.unmute")){
 				sender.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
 				return true;
@@ -47,7 +47,7 @@ public class unMute implements CommandExecutor {
 					return true;
 				}
 				mutelist.remove(args[0].toLowerCase());
-				for(Player pl : Bukkit.getOnlinePlayers()){
+				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unmuted").replace("%admin%", p.getName()).replace("%unmuted%", args[0])));
 				}
 				config.set("mutelist", mutelist);

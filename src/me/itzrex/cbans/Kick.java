@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Kick implements CommandExecutor {
+    //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 
 	/*
 	 * Класс, отвечающий за кик.
@@ -15,7 +16,7 @@ public class Kick implements CommandExecutor {
 	public static String prefix = CustomBans.prefix;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-			Player p = (Player) sender;
+			CommandSender p = sender;
 			if(!p.hasPermission("cbans.kick")){
 				p.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
 				return true;
@@ -33,7 +34,7 @@ public class Kick implements CommandExecutor {
 						return true;
 					}
 					//Отправляем сообщение игрокам.
-					for(Player pl : Bukkit.getOnlinePlayers()){
+					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", "�� �������")));
 						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg").replace("%admin%", p.getName()).replace("%reason%", "�� �������")));
 				}
@@ -57,7 +58,7 @@ public class Kick implements CommandExecutor {
 					return true;
 				}
 				//Отправляем сообщения игрокам и игроку, который кикнут.
-				for(Player pl : Bukkit.getOnlinePlayers()){
+				for(Player pl : Utils.getOnlinePlayers()){
 					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", reason)));
 					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg").replace("%admin%", p.getName()).replace("%reason%", reason)));
 					return true;
