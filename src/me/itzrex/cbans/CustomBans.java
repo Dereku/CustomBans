@@ -7,10 +7,8 @@ import java.util.List;
 
 import me.itzrex.cbans.inv.InvCmd;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.MetricsLite;
 
 public class CustomBans extends JavaPlugin {
 
@@ -44,15 +42,10 @@ public class CustomBans extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 		//Загружаем конфиг
-		configInit();
+		saveDefaultConfig();
 		//Создаём файлы bans.yml, mutes.yml, players.yml
 		createFiles();
 		//Достаём команды.
-		try {
-			new MetricsLite(this).start();
-		} catch (IOException e){
-			e.printStackTrace();
-		}
 		getCommand("kick").setExecutor(new Kick());
 		getCommand("ban").setExecutor(new Ban());
 		getCommand("mute").setExecutor(new Mute());
@@ -74,18 +67,6 @@ public class CustomBans extends JavaPlugin {
 		getLogger().info("================================================");
 	}
 	
-	//Загрузка конфига
-	
-	public void configInit(){
-		prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
-		banned = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned"));
-		kicked = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked"));
-		targetkmsg = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg"));
-		targetmsg = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg"));
-		noperm = ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm"));
-		unbanned = ChatColor.translateAlternateColorCodes('&', getConfig().getString("messages.unbanned"));
-		saveDefaultConfig();
-	}
 	//Создание файлов.
 	public void createFiles(){
 		if(!new File(getDataFolder(), "players.yml").exists()){

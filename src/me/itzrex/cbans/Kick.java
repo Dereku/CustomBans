@@ -13,6 +13,7 @@ public class Kick implements CommandExecutor {
 	 * Класс, отвечающий за кик.
 	 */
 	public static String prefix = CustomBans.prefix;
+	public static String reason;
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 			CommandSender p = sender;
@@ -26,6 +27,12 @@ public class Kick implements CommandExecutor {
 			}
 			//Кик без причины.
 			if(args.length == 1){
+				reason = "Не указана";
+			} else if(args.length < 2 ){
+				return true;
+			} else {
+				reason = org.apache.commons.lang.StringUtils.join(args, ' ', 1, args.length);
+			}
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target.hasPermission("cbans.shield")){
@@ -43,31 +50,6 @@ public class Kick implements CommandExecutor {
 					sender.sendMessage(prefix + "§7Игрок не онлайн.");
 					
 				} 
-			}
-			if(args.length < 2 ){
-				return true;
-			}
-			//Кик с причиной.
-			String reason = "Не указана.";
-			try {
-				//Получаем причину из массива.
-				reason = org.apache.commons.lang.StringUtils.join(args, ' ', 1, args.length);
-				Player target = Bukkit.getPlayer(args[0]);
-				if(target.hasPermission("cbans.shield")){
-					sender.sendMessage(prefix + "§7Игрок защищён от кика.");
-					return true;
-				}
-				//Отправляем сообщения игрокам и игроку, который кикнут.
-				for(Player pl : Utils.getOnlinePlayers()){
-					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", reason)));
-					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetkmsg").replace("%admin%", p.getName()).replace("%reason%", reason)));
-					CustomBans.geInstance().getLogger().info("Player " + target.getName() + " kicked.");
-					return true;
-			}
-				
-			} catch (NullPointerException e2){
-				sender.sendMessage(prefix + "§7Игрок не онлайн.");
-			}
 		return true;
 }
 }

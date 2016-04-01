@@ -1,5 +1,5 @@
-CustomBans v0.4 by itzRex
+CustomBans v0.5 by itzRex
 
-RuBukkit page - http://rubukkit.org/threads/admn-custombans-v0-4-nebolshaja-sistema-banov-1-8.119975/
+RuBukkit page - http://rubukkit.org/threads/119975/
 
 Developer - http://vk.com/itzrex
