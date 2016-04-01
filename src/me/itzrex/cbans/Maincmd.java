@@ -37,7 +37,7 @@ public class Maincmd implements CommandExecutor {
 				for(String s : banlist){
 					sender.sendMessage("§c- §7" + s + " (Пермамент - " + (CustomBans.dconfig.getBoolean((s) + ".permament") ? "§aДа§7)" : "§cНет§7)"));
 				}
-				return false;
+				return true;
 				}
 			if(args[0].equalsIgnoreCase("mutelist")){
 				//Делаем тоже самое, что и с банлистом
@@ -46,14 +46,14 @@ public class Maincmd implements CommandExecutor {
 				for(String s : mutelist){
 					sender.sendMessage("§c- §7" + s);
 				}
-				return false;
+				return true;
 				}
 			if(args[0].equalsIgnoreCase("deletebans")){
 				List<String> banlist = CustomBans.dconfig.getStringList("banlist");
 				//Проверяем, если в листе игроков нет, то есть 0.
 				if(banlist.size() == 0){
 					sender.sendMessage(prefix + "§cВ банлисте нету забаненых игроков");
-					return false;
+					return true;
 				}
 				//Очищаем массив
 				banlist.clear();
@@ -72,7 +72,7 @@ public class Maincmd implements CommandExecutor {
 			List<String> mutelist = CustomBans.dconfig.getStringList("mutelist");
 			if(mutelist.size() == 0){
 				sender.sendMessage(prefix + "§7В мутлисте нету игроков");
-				return false;
+				return true;
 			}
 			mutelist.clear();
 			CustomBans.dconfig.set("mutelist", mutelist);
@@ -83,6 +83,6 @@ public class Maincmd implements CommandExecutor {
 			}
 		}
 		sender.sendMessage(prefix + "§7Мутлист очищен.");
-		return false;
+		return true;
  }
 }
