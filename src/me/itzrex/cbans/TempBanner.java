@@ -57,7 +57,8 @@ public class TempBanner implements CommandExecutor {
 						sender.sendMessage(ChatColor.RED + "Игрок уже забанен.");
 						return true;
 					} else {
-							banlist.add(target.getName().toLowerCase());
+						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", reason).replace("%time%", args[1])));
+						banlist.add(target.getName().toLowerCase());
 						CustomBans.dconfig.set("banlist", banlist);
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", reason);
