@@ -18,7 +18,6 @@ public class Checker implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if((sender instanceof Player)){
-			CommandSender p = sender;
 			if(!sender.hasPermission("cbans.check")){
 				sender.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.noperm")));
 				return false;

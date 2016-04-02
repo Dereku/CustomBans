@@ -24,9 +24,6 @@ public class PlayerListener implements Listener {
 	public void onJoin(PlayerLoginEvent e) throws IOException{
 		Player p = e.getPlayer();
 		List<String> banlist = (List<String>) CustomBans.dconfig.getStringList("banlist");
-		if(CustomBans.dplayers.getBoolean(p.getName())){
-			return;
-		}
 		//Проверяем, есть-ли игрок в банлисте.
 		if(banlist.contains(p.getName().toLowerCase())){
 			//Проверяем, забанен-ли игрок навсегда (пермамент).
@@ -76,11 +73,11 @@ public class PlayerListener implements Listener {
 		//Проверка игрока на OP или право "cbans.shield"
 		//Если он имеет это право.
 		if(p.hasPermission("cbans.shield")){
-			CustomBans.dplayers.set(p.getName(), true);
+			CustomBans.dplayers.set(p.getName().toLowerCase(), true);
 			CustomBans.dplayers.save(CustomBans.players);
 			//В другом случае:
 		} else {
-			CustomBans.dplayers.set(p.getName(), false);
+			CustomBans.dplayers.set(p.getName().toLowerCase(), false);
 			CustomBans.dplayers.save(CustomBans.players);
 		}
 	}
