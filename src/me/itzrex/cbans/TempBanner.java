@@ -45,17 +45,20 @@ public class TempBanner implements CommandExecutor {
 					}
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target.hasPermission("cbans.shield")){
-						sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+						if (sender.hasPermission("cbans.shieldbypass")) {
+							sender.sendMessage(" ");
+								} else {
+									sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+									return true;
+								}
+						}
+					List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
+					if(banlist.contains(target.getName().toLowerCase())){
+						sender.sendMessage(ChatColor.RED + "Игрок уже забанен.");
 						return true;
-					}
-					for(Player pl : Utils.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", target.getName()).replace("%reason%", reason)).replace("%time%", args[1]));
-					}
-					CustomBans.geInstance().getLogger().info("Player " + target.getName() + " tempbanned for " + args[1] + " minutes.");
-					target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", reason).replace("%time%", args[1])));
-						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
-						if(!banlist.contains(target.getName().toLowerCase())){
-							banlist.add(target.getName().toLowerCase());
+					} else {
+						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targettempmsg").replace("%admin%", p.getName()).replace("%reason%", reason).replace("%time%", args[1])));
+						banlist.add(target.getName().toLowerCase());
 						CustomBans.dconfig.set("banlist", banlist);
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".reason", reason);
@@ -72,18 +75,22 @@ public class TempBanner implements CommandExecutor {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
+						for(Player pl : Utils.getOnlinePlayers()){
+							pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
+						}
+						CustomBans.geInstance().getLogger().info("Player " + args[0] + " tempbanned for " + args[1] + " minutes.");
 						return true;
 					}
 						
 				} catch (NullPointerException e){
-					if(CustomBans.dplayers.getBoolean(args[0])){
-						sender.sendMessage(prefix + "§7Игрок защищён от бана.");
-						return true;
-					}
-					for(Player pl : Utils.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
-					}
-					CustomBans.geInstance().getLogger().info("Player " + args[0] + " tempbanned for " + args[1] + " minutes.");
+					if(CustomBans.dplayers.getBoolean(args[0].toLowerCase())){
+						if (sender.hasPermission("cbans.shieldbypass")) {
+							sender.sendMessage(" ");
+								} else {
+									sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+									return true;
+								}
+						}
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(args[0].toLowerCase())){
 							banlist.add(args[0].toLowerCase());
@@ -98,11 +105,18 @@ public class TempBanner implements CommandExecutor {
 			            Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
 			            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
 			            CustomBans.dconfig.set(String.valueOf(args[0].toLowerCase()) + ".bans-time", currentMin);
+						for(Player pl : Utils.getOnlinePlayers()){
+							pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempbanned").replace("%admin%", p.getName()).replace("%banned%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
+						}
+						CustomBans.geInstance().getLogger().info("Player " + args[0] + " tempbanned for " + args[1] + " minutes.");
 						try {
 							CustomBans.dconfig.save(CustomBans.dataFile);
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
+					} else {
+						sender.sendMessage(ChatColor.RED + "Игрок уже забанен.");
+						return true;
 					}
 					
 				} catch (NumberFormatException e) {

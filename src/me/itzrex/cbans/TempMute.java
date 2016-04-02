@@ -46,15 +46,18 @@ public class TempMute implements CommandExecutor {
 					}
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target.hasPermission("cbans.shield")){
-						sender.sendMessage(prefix + "§7Игрок защищен от мута.");
+						if (sender.hasPermission("cbans.shieldbypass")) {
+							sender.sendMessage(" ");
+								} else {
+									sender.sendMessage(prefix + "§7Игрок защищён от мута.");
+									return true;
+								}
+						}
+					List<String> mutelist = (List<String>)CustomBans.dconfig2.getStringList("mutelist");
+					if(mutelist.contains(target.getName().toLowerCase())){
+						sender.sendMessage(ChatColor.RED + "Игрок уже замутен.");
 						return true;
-					}
-					for(Player pl : Utils.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", sender.getName()).replace("%muted%", target.getName()).replace("%reason%", reason)).replace("%time%", args[1]));
-					}
-					CustomBans.geInstance().getLogger().info("Player " + target.getName() + " tempmuted for " + args[1] + " minutes.");
-						List<String> mutelist = (List<String>)CustomBans.dconfig2.getStringList("mutelist");
-						if(!mutelist.contains(target.getName().toLowerCase())){
+					} else {
 							mutelist.add(target.getName().toLowerCase());
 						CustomBans.dconfig2.set("mutelist", mutelist);
 						CustomBans.dconfig2.set(target.getName().toLowerCase() + ".mutedby", p.getName());
@@ -72,14 +75,22 @@ public class TempMute implements CommandExecutor {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
+						for(Player pl : Utils.getOnlinePlayers()){
+							pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", sender.getName()).replace("%muted%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
+						}
+						CustomBans.geInstance().getLogger().info("Player " + args[0] + " tempmuted for " + args[1] + " minutes.");
 						return true;
 				}
 						
 				} catch (NullPointerException e){
-					if(CustomBans.dplayers.getBoolean(args[0])){
-						sender.sendMessage(prefix + "§7Игрок защищен от мута.");
-						return true;
-					}
+					if(CustomBans.dplayers.getBoolean(args[0].toLowerCase())){
+						if (sender.hasPermission("cbans.shieldbypass")) {
+							sender.sendMessage(" ");
+								} else {
+									sender.sendMessage(prefix + "§7Игрок защищён от мута.");
+									return true;
+								}
+						}
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", sender.getName()).replace("%muted%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
 					}
@@ -98,11 +109,18 @@ public class TempMute implements CommandExecutor {
 			            Integer minute = Integer.valueOf(Calendar.getInstance().get(12));
 			            Integer currentMin = Integer.valueOf(day_of_year.intValue() * 1440 + hour.intValue() * 60 + minute.intValue());
 			            CustomBans.dconfig2.set(String.valueOf(args[0].toLowerCase()) + ".mutes-time", currentMin);
+						for(Player pl : Utils.getOnlinePlayers()){
+							pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.tempmuted").replace("%admin%", sender.getName()).replace("%muted%", args[0]).replace("%reason%", reason)).replace("%time%", args[1]));
+						}
+						CustomBans.geInstance().getLogger().info("Player " + args[0] + " tempmuted for " + args[1] + " minutes.");
 						try {
 							CustomBans.dconfig2.save(CustomBans.dataFile2);
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
+				}  else {
+					sender.sendMessage(ChatColor.RED + "Игрок уже замутен.");
+					return true;
 				}
 				}
 		return true;

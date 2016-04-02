@@ -36,9 +36,13 @@ public class Kick implements CommandExecutor {
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target.hasPermission("cbans.shield")){
-						sender.sendMessage(prefix + "§7Игрок защищён от кика.");
-						return true;
-					}
+						if (sender.hasPermission("cbans.shieldbypass")) {
+							sender.sendMessage(" ");
+								} else {
+									sender.sendMessage(prefix + "§7Игрок защищён от кика.");
+									return true;
+								}
+						}
 					//Отправляем сообщение игрокам.
 					for(Player pl : Utils.getOnlinePlayers()){
 						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.kicked").replace("%admin%", p.getName()).replace("%kicked%", target.getName()).replace("%reason%", "Не указана")));
