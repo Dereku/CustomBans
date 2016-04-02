@@ -41,16 +41,18 @@ public class Mute implements CommandExecutor {
 				try {
 					Player target = Bukkit.getPlayer(args[0]);
 					if(target.hasPermission("cbans.shield")){
-						sender.sendMessage(prefix + "§7Игрок защищён от мута.");
-						return true;
-					}
-					for(Player pl : Utils.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.muted").replace("%admin%", sender.getName()).replace("%muted%", target.getName()).replace("%reason%", reason)));
-					}
-					CustomBans.geInstance().getLogger().info("Player " + target.getName() + " muted.");
-
+						if (sender.hasPermission("cbans.shieldbypass")) {
+							sender.sendMessage(" ");
+								} else {
+									sender.sendMessage(prefix + "§7Игрок защищён от мута.");
+									return true;
+								}
+						}
 						List<String> mutelist = (List<String>)CustomBans.dconfig2.getStringList("mutelist");
-						if(!mutelist.contains(target.getName().toLowerCase())){
+						if(mutelist.contains(target.getName().toLowerCase())){
+							sender.sendMessage(ChatColor.RED + "Игрок уже замутен.");
+							return true;
+						} else {
 							mutelist.add(target.getName().toLowerCase());
 						CustomBans.dconfig2.set("mutelist", mutelist);
 						CustomBans.dconfig2.set(target.getName().toLowerCase() + ".mutedby", p.getName());
@@ -58,19 +60,23 @@ public class Mute implements CommandExecutor {
 						CustomBans.dconfig2.set(target.getName().toLowerCase() + ".time", getDateTime());
 						CustomBans.dconfig2.set(target.getName().toLowerCase() + ".permament", true);
 						CustomBans.dconfig2.save(CustomBans.dataFile2);
+						for(Player pl : Utils.getOnlinePlayers()){
+							pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.muted").replace("%admin%", sender.getName()).replace("%muted%", target.getName()).replace("%reason%", reason)));
+						}
+						CustomBans.geInstance().getLogger().info("Player " + target.getName() + " muted.");
 						return true;
 
 				}
 						
 				} catch (NullPointerException e){
-					if(CustomBans.dplayers.getBoolean(args[0])){
-						sender.sendMessage(prefix + "§7Защищён от мута");
-						return true;
-					}
-					for(Player pl : Utils.getOnlinePlayers()){
-						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.muted").replace("%admin%", p.getName()).replace("%muted%", args[0]).replace("%reason%", reason)));
-					}
-					CustomBans.geInstance().getLogger().info("Player " + args[0] + " muted.");
+					if(CustomBans.dplayers.getBoolean(args[0].toLowerCase())){
+						if (sender.hasPermission("cbans.shieldbypass")) {
+							sender.sendMessage(" ");
+								} else {
+									sender.sendMessage(prefix + "§7Игрок защищён от мута.");
+									return true;
+								}
+						}
 						List<String> mutelist = (List<String>)CustomBans.dconfig2.getStringList("mutelist");
 						if(!mutelist.contains(args[0].toLowerCase())){
 							mutelist.add(args[0].toLowerCase());
@@ -79,13 +85,20 @@ public class Mute implements CommandExecutor {
 						CustomBans.dconfig2.set(args[0].toLowerCase() + ".reason", reason);
 						CustomBans.dconfig2.set(args[0].toLowerCase() + ".time", getDateTime());
 						CustomBans.dconfig2.set(args[0].toLowerCase() + ".permament", true);
+						CustomBans.geInstance().getLogger().info("Player " + args[0] + " muted.");
+						for(Player pl : Utils.getOnlinePlayers()){
+							pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.muted").replace("%admin%", p.getName()).replace("%muted%", args[0]).replace("%reason%", reason)));
+						}
 						try {
 							CustomBans.dconfig2.save(CustomBans.dataFile2);
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
+					}  else {
+						sender.sendMessage(ChatColor.RED + "Игрок уже замутен.");
+						return true;
 					}
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

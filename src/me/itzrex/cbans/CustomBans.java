@@ -7,6 +7,7 @@ import java.util.List;
 
 import me.itzrex.cbans.inv.InvCmd;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,6 +44,7 @@ public class CustomBans extends JavaPlugin {
 		plugin = this;
 		//Загружаем конфиг
 		saveDefaultConfig();
+		prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"));
 		//Создаём файлы bans.yml, mutes.yml, players.yml
 		createFiles();
 		//Достаём команды.
