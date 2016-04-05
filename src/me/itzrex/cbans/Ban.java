@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import me.itzrex.cbans.managers.BanManager;
+import me.itzrex.cbans.utils.Utils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +16,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.itzrex.cbans.Utils;
 public class Ban implements CommandExecutor {
     //TODO send.sendMessage("Игрок был забанен, замучен, и тд(Для отображения в консоли)"
 	/*
@@ -49,14 +51,17 @@ public class Ban implements CommandExecutor {
 								return true;
 							}
 					}
-						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
-						//Проверяем, есть-ли игрок в банлисте.
-						if(banlist.contains(target.getName().toLowerCase())){
-							sender.sendMessage(ChatColor.RED + "Игрок уже забанен.");
+				        if(CustomBans.geInstance().isMySQL){
+				        	CustomBans.geInstance().getBanManager().ban(target.getName().toLowerCase(), reason, p.getName());
+							target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", reason)));
+							for(Player pl : Utils.getOnlinePlayers()){
+								pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", sender.getName()).replace("%banned%", target.getName()).replace("%reason%", reason)));
+							}
+							CustomBans.geInstance().getLogger().info("Player " + target.getName() + " banned.");
 							return true;
-							//Если его там нет, заносим в банлист.
-						} else {
-							banlist.add(target.getName().toLowerCase());
+				        } else {
+						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
+						banlist.add(target.getName().toLowerCase());
 						target.kickPlayer(ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.targetmsg").replace("%admin%", p.getName()).replace("%reason%", reason)));
 						CustomBans.dconfig.set("banlist", banlist);
 						CustomBans.dconfig.set(target.getName().toLowerCase() + ".bannedby", p.getName());
@@ -70,16 +75,24 @@ public class Ban implements CommandExecutor {
 						}
 						    CustomBans.geInstance().getLogger().info("Player " + target.getName() + " banned.");
 						return true;
-					} 
+				       }
 				} catch (NullPointerException e){
-					if(CustomBans.dplayers.getBoolean(args[0].toLowerCase())){
-						if (sender.hasPermission("cbans.shieldbypass")) {
-							sender.sendMessage(" ");
-								} else {
-									sender.sendMessage(prefix + "§7Игрок защищён от бана.");
-									return true;
-								}
-						}
+				        if(CustomBans.geInstance().isMySQL){
+				        	if(CustomBans.geInstance().getBanManager().isWhitelisted(args[0].toLowerCase())){
+				        		sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+				        		return true;
+				        	}
+				        	CustomBans.geInstance().getBanManager().ban(args[0].toLowerCase(), reason, p.getName());
+							for(Player pl : Utils.getOnlinePlayers()){
+								pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", sender.getName()).replace("%banned%", args[0]).replace("%reason%", reason)));
+							}
+							CustomBans.geInstance().getLogger().info("Player " + args[0] + " banned.");
+							return true;
+						} else {
+							if(CustomBans.dplayers.getBoolean(args[0].toLowerCase())){
+								sender.sendMessage(prefix + "§7Игрок защищён от бана.");
+								return true;
+							}
 						List<String> banlist = (List<String>)CustomBans.dconfig.getStringList("banlist");
 						if(!banlist.contains(args[0].toLowerCase())){
 							banlist.add(args[0].toLowerCase());
@@ -101,13 +114,14 @@ public class Ban implements CommandExecutor {
 							pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.banned").replace("%admin%", sender.getName())).replace("%banned%", args[0]).replace("%reason%", reason));
 						}
 						CustomBans.geInstance().getLogger().info("Player " + args[0] + " banned.");
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			
 		return true;
 }
-	  private static String getDateTime()
+	  public static String getDateTime()
 	  {
 	    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	    Date date = new Date();

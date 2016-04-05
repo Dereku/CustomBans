@@ -1,4 +1,4 @@
-package me.itzrex.cbans;
+package me.itzrex.cbans.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

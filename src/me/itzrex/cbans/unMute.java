@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import me.itzrex.cbans.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.command.Command;
@@ -40,25 +41,38 @@ public class unMute implements CommandExecutor {
 				return true;
 			}
 			if(args.length == 1){
-				List<String> mutelist = (List<String>) config.getStringList("mutelist");
-				if(!mutelist.contains(args[0].toLowerCase())){
-					sender.sendMessage(prefix + "Игрок не был в муте.");
+				if(CustomBans.geInstance().isMySQL){
+					if(!CustomBans.geInstance().getBanManager().mutes.containsKey(args[0].toLowerCase())){
+						sender.sendMessage(prefix + "Игрок не был в муте.");
+						return true;
+					}
+					CustomBans.geInstance().getBanManager().unmute(args[0].toLowerCase());
+					for(Player pl : Utils.getOnlinePlayers()){
+						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unmuted").replace("%admin%", p.getName()).replace("%unmuted%", args[0])));
+					}
+					CustomBans.geInstance().getLogger().info("Player " + args[0] + " unmuted.");
 					return true;
-				}
-				mutelist.remove(args[0].toLowerCase());
-				for(Player pl : Utils.getOnlinePlayers()){
-					pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unmuted").replace("%admin%", p.getName()).replace("%unmuted%", args[0])));
-				}
-				CustomBans.geInstance().getLogger().info("Player " + args[0] + " unmuted.");
+				} else {
+					List<String> mutelist = (List<String>) config.getStringList("mutelist");
+					if(!mutelist.contains(args[0].toLowerCase())){
+						sender.sendMessage(prefix + "Игрок не был в муте.");
+						return true;
+					}
+					mutelist.remove(args[0].toLowerCase());
+					for(Player pl : Utils.getOnlinePlayers()){
+						pl.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', CustomBans.geInstance().getConfig().getString("messages.unmuted").replace("%admin%", p.getName()).replace("%unmuted%", args[0])));
+					}
+					CustomBans.geInstance().getLogger().info("Player " + args[0] + " unmuted.");
 
-				config.set("mutelist", mutelist);
-				try {
-					config.save(dataFile);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					config.set("mutelist", mutelist);
+					try {
+						config.save(dataFile);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
+				}
 		return true;
 	}
 

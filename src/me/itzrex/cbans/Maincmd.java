@@ -3,6 +3,8 @@ package me.itzrex.cbans;
 import java.io.IOException;
 import java.util.List;
 
+import me.itzrex.cbans.managers.BanManager;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,14 +25,20 @@ public class Maincmd implements CommandExecutor {
 		}
 		//Вывод команд
 		sender.sendMessage(prefix + "Версия: §c" + CustomBans.geInstance().getDescription().getVersion() + "§7 by §citzRex");
+		sender.sendMessage("§6* §7Режим MySQL - " + String.valueOf((CustomBans.geInstance().isMySQL) ? "§aВключён" : "§cВыключен"));
 		sender.sendMessage("§6* §c/" + label + " §cbanlist §7- Список забаненых игроков.");
-		sender.sendMessage("§6* §c/" + label + " §cdeletebans §7- Удалить список забаненых.");
-		sender.sendMessage("§6* §c/" + label + " §cdeletemutes §7- Удалить список игроков с мутами.");
 		sender.sendMessage("§6* §c/" + label + " §cmutelist §7- Список игроков с мутом.");
 		return false;
 	}
 		if(args.length == 1){
 			if(args[0].equalsIgnoreCase("banlist")){
+				if(CustomBans.geInstance().isMySQL){
+					sender.sendMessage(prefix + "§7Забаненые игроки:");
+					for(String s : BanManager.bans.keySet()){
+						sender.sendMessage("§c- §7" + s);
+						return true;
+					}
+				} else {
 				List<String> banlist = CustomBans.dconfig.getStringList("banlist");
 				sender.sendMessage(prefix + "§7Забаненые игроки:");
 				//Отсылаем игроку список всех забаненых игроков через for.
@@ -39,50 +47,25 @@ public class Maincmd implements CommandExecutor {
 				}
 				return true;
 				}
+				}
 			if(args[0].equalsIgnoreCase("mutelist")){
 				//Делаем тоже самое, что и с банлистом
-				List<String> mutelist = CustomBans.dconfig2.getStringList("mutelist");
-				sender.sendMessage(prefix + "§7Список игроков с мутом:");
-				for(String s : mutelist){
-					sender.sendMessage("§c- §7" + s);
-				}
-				return true;
-				}
-			if(args[0].equalsIgnoreCase("deletebans")){
-				List<String> banlist = CustomBans.dconfig.getStringList("banlist");
-				//Проверяем, если в листе игроков нет, то есть 0.
-				if(banlist.size() == 0){
-					sender.sendMessage(prefix + "§cВ банлисте нету забаненых игроков");
+				if(CustomBans.geInstance().isMySQL){
+					sender.sendMessage(prefix + "§7Список игроков с мутом:");
+					for(String s : BanManager.mutes.keySet()){
+						sender.sendMessage("§c- §7" + s);
+						return true;
+					}
+				} else {
+					List<String> mutelist = CustomBans.dconfig2.getStringList("mutelist");
+					sender.sendMessage(prefix + "§7Список игроков с мутом:");
+					for(String s : mutelist){
+						sender.sendMessage("§c- §7" + s);
+					}
 					return true;
+					}
 				}
-				//Очищаем массив
-				banlist.clear();
-				CustomBans.dconfig.set("banlist", banlist);
-				//Сохраняем файл bans.yml
-				try {
-					CustomBans.dconfig.save(CustomBans.dataFile);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			sender.sendMessage(prefix + "§7Банлист очищен.");
-			}
-		if(args[0].equalsIgnoreCase("deletemutes")){
-			//Тоже самое, что и с банами.
-			List<String> mutelist = CustomBans.dconfig.getStringList("mutelist");
-			if(mutelist.size() == 0){
-				sender.sendMessage(prefix + "§7В мутлисте нету игроков");
-				return true;
-			}
-			mutelist.clear();
-			CustomBans.dconfig.set("mutelist", mutelist);
-			try {
-				CustomBans.dconfig.save(CustomBans.dataFile);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
-		sender.sendMessage(prefix + "§7Мутлист очищен.");
-		return true;
+		return false;
  }
 }

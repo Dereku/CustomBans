@@ -1,5 +1,7 @@
 package me.itzrex.cbans;
 
+import me.itzrex.cbans.utils.Utils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
