@@ -1,5 +1,5 @@
 
-CustomBans v1.2 by itzRex
+CustomBans v1.3 by itzRex
 
 RuBukkit page - http://rubukkit.org/threads/119975/
 
