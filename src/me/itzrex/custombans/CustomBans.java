@@ -29,13 +29,14 @@ import java.io.InputStream;
  * Класс создан itzRex. Дата: 06.04.2016.
  */
 public class CustomBans extends JavaPlugin {
+    //TODO: Изменить все e.printStackTrace(); на this.getLogger().log(Level.WARNING, "Сообщение ошибки", e);
 
     public static CustomBans instance;
     public static CustomBans getInstance(){
         return instance;
     }
     public static String defaultreason = "Не указана";
-    public boolean isMySQL = getConfig().getBoolean("mysql.enable");
+    public boolean isMySQL;
     public Database db;
     private BanManager manager;
     public static File messageFile;
@@ -48,8 +49,9 @@ public class CustomBans extends JavaPlugin {
         saveDefaultConfig();
         DatabaseCore dCore;
         ConfigurationSection sec = getConfig().getConfigurationSection("mysql");
+        isMySQL = getConfig().getBoolean("mysql.enable");
         if(isMySQL){
-            Bukkit.getLogger().info("[CustomBans] Using MySQL...");
+            this.getLogger().info("Using MySQL...");
             String host = sec.getString("host");
             String user = sec.getString("user");
             String pass = sec.getString("pass");
@@ -57,13 +59,13 @@ public class CustomBans extends JavaPlugin {
             String port = sec.getString("port");
             dCore = new MySQLCore(host, user, pass, name, port);
         } else {
-            Bukkit.getLogger().info("[CustomBans] Using SQLite...");
+            this.getLogger().info("Using SQLite...");
             dCore = new SQLiteCore(new File(getDataFolder(), "bans.db"));
         }
         try {
             this.db = new Database(dCore);
         } catch(Database.ConnectionException e){
-            Bukkit.getLogger().info("Failed connection to database. Disabling CustomBans :(");
+            this.getLogger().info("Failed connection to database. Disabling CustomBans :(");
             Bukkit.getPluginManager().disablePlugin(this);
         }
         try {
