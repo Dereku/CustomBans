@@ -97,7 +97,7 @@ public class CustomBans extends JavaPlugin {
       return groups[0];
     }
         
-    public static void reload(){
+    public void reload(){
         File f = new File(CustomBans.getInstance().getDataFolder(), "limits.yml");
         YamlConfiguration cfg = new YamlConfiguration();
         try{
