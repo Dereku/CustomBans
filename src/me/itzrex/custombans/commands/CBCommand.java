@@ -49,7 +49,7 @@ public class CBCommand implements CommandExecutor {
                     return true;
                 }
                 p.sendMessage(prefix + "§aСписок игроков с защитой от бана:");
-                for(String s : CustomBans.getInstance().getBanManager().whitelist){
+                for(String s : CustomBans.getInstance().getBanManager().getWhitelist()){
                     p.sendMessage("§e- §a" + s);
                 }
                 return true;

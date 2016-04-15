@@ -20,19 +20,20 @@ import java.util.HashSet;
  * Класс создан itzRex. Дата: 06.04.2016.
  */
 public class BanManager {
+    //TODO: Изменить все e.printStackTrace(); на CustomBans.getInstance().getLogger().log(Level.WARNING, "Сообщение ошибки", e);
 
-    private CustomBans plugin;
-    public static HashMap<String, Ban> bans = new HashMap<String, Ban>();
-    public static HashMap<String, TempBan> tempbans = new HashMap<String, TempBan>();
-    public static HashMap<String, BanIP> ipbans = new HashMap<String, BanIP>();
-    public static HashMap<String, TempBanIP> tempipbans = new HashMap<String, TempBanIP>();
-    public static TrieSet players = new TrieSet();
-    public static HashSet<String> whitelist = new HashSet<String>();
-    public static HashMap<String, Mute> mutes = new HashMap<String, Mute>();
-    public static HashMap<String, TempMute> tempmutes = new HashMap<String, TempMute>();
-    private HashMap<String, String> actualNames = new HashMap<String, String>();
-    private HashMap<String, String> recentips = new HashMap<String, String>();
-    private HashMap<String, HashSet<String>> iplookup = new HashMap<String, HashSet<String>>();
+    private final CustomBans plugin;
+    private final TrieSet players = new TrieSet();
+    private final HashMap<String, Ban> bans = new HashMap<String, Ban>();
+    private final HashMap<String, TempBan> tempbans = new HashMap<String, TempBan>();
+    private final HashMap<String, BanIP> ipbans = new HashMap<String, BanIP>();
+    private final HashMap<String, TempBanIP> tempipbans = new HashMap<String, TempBanIP>();
+    private final HashSet<String> whitelist = new HashSet<String>();
+    private final HashMap<String, Mute> mutes = new HashMap<String, Mute>();
+    private final HashMap<String, TempMute> tempmutes = new HashMap<String, TempMute>();
+    //private HashMap<String, String> actualNames = new HashMap<String, String>();
+    private final HashMap<String, String> recentips = new HashMap<String, String>();
+    private final HashMap<String, HashSet<String>> iplookup = new HashMap<String, HashSet<String>>();
     private Database db;
 
     public BanManager(CustomBans plugin){
@@ -46,7 +47,10 @@ public class BanManager {
     public HashMap<String, TempBan> getTempBans(){
         return tempbans;
     }
-    public void reload(){
+    public HashSet<String> getWhitelist() {
+        return this.whitelist;
+    }
+    public final void reload(){
         this.db = plugin.getDb();
         db.getCore().flush();
         this.bans.clear();
@@ -64,7 +68,7 @@ public class BanManager {
             e.printStackTrace();
         }
         plugin.getLogger().info("Loading DB..");
-        String query = "";
+        String query;
         try {
 
             db.getConnection().close();
@@ -302,15 +306,12 @@ public class BanManager {
         return partial;
     }
     public void kickIP(final String ip, final String msg){
-        Runnable r = new Runnable(){
-            @Override
-            public void run(){
-                for(Player p : Bukkit.getOnlinePlayers()){
-                    if(isWhitelisted(p.getName()) == false){
-                        String pip = getIP(p.getName()); //The players IP, Don't use player.getIP(), incase we use bungee it could be wrong!
-                        if(ip.equals(pip)){
-                            p.kickPlayer(msg);
-                        }
+        Runnable r = () -> {
+            for(Player p : Bukkit.getOnlinePlayers()){
+                if(isWhitelisted(p.getName()) == false){
+                    String pip = getIP(p.getName()); //The players IP, Don't use player.getIP(), incase we use bungee it could be wrong!
+                    if(ip.equals(pip)){
+                        p.kickPlayer(msg);
                     }
                 }
             }
@@ -352,7 +353,7 @@ public class BanManager {
     }
     public void ban(String name, String reason, String banner){
         name = name.toLowerCase();
-        banner = banner.toLowerCase();;
+        banner = banner.toLowerCase();
 
         this.unban(name); //Ensure they're unbanned first.
 
