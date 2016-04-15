@@ -1,7 +1,5 @@
 package me.itzrex.custombans.managers;
 
-import me.itzrex.custombans.managers.Ban;
-
 public class BanIP extends Ban { // I think its just luck that you can do this.
     public BanIP(String ip, String reason, String banner, long created){
         super(ip, reason, banner, created);

@@ -1,13 +1,10 @@
 package me.itzrex.custombans.managers;
 
 
-import me.itzrex.custombans.Msg;
-import me.itzrex.custombans.managers.Ban;
-import me.itzrex.custombans.managers.Temporary;
 import me.itzrex.custombans.util.Util;
 
 public class TempBan extends Ban implements Temporary{
-    private long expires;
+    private final long expires;
 
     /**
      * Creates a new tempban. Does not store it in memory or the DB.
@@ -25,6 +22,7 @@ public class TempBan extends Ban implements Temporary{
      * Returns the time the ban expires
      * @return The time the ban expires
      */
+    @Override
     public long getExpires() {
         return expires;
     }
@@ -32,6 +30,7 @@ public class TempBan extends Ban implements Temporary{
      * Returns true if this tempban has expired.
      * @return true if this tempban has expired.
      */
+    @Override
     public boolean hasExpired(){
         return System.currentTimeMillis() > expires;
     }
