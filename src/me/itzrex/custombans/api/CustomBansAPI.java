@@ -1,18 +1,13 @@
 package me.itzrex.custombans.api;
 
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.libs.jline.internal.Log.Level;
-import org.bukkit.entity.Player;
-
-import com.avaje.ebean.LogLevel;
 
 import me.itzrex.custombans.CustomBans;
 import me.itzrex.custombans.Msg;
 import me.itzrex.custombans.managers.Ban;
 import me.itzrex.custombans.managers.BanManager;
 import me.itzrex.custombans.managers.Mute;
-import me.itzrex.custombans.managers.TempBan;
 
 public class CustomBansAPI {
 
@@ -30,41 +25,45 @@ public class CustomBansAPI {
 		
 	}
 	
-	public static void unban(String name){
+	public static boolean unban(String name){
 		Ban ban = getBanManager().getBan(name);
 		if(ban != null){
 			getBanManager().unban(name);
 		} else {
-			Bukkit.getLogger().info(Level.ERROR + "Player not banned.");
+			Bukkit.getLogger().log(Level.WARNING, "Player not banned.");
 		}
+		return ban != null;
 	}
 	
-	public static void ban(String name, String reason, String banner){
+	public static boolean ban(String name, String reason, String banner){
 		Ban ban = getBanManager().getBan(name);
 		if(ban != null){
 			getBanManager().ban(name, reason, banner);
 		}
+ 		return ban != null;
 	}
 	
 	public static void tempban(String name, String reason, String banner, long expires){
 		getBanManager().tempban(name, reason, banner, expires);
 	}
 	
-	public static void mute(String name, String reason, String banner){
+	public static boolean mute(String name, String reason, String banner){
 		Mute mute = getBanManager().getMute(name);
 		if(mute != null){
 			getBanManager().mute(name, banner, reason);
-	   } else {
-			Bukkit.getLogger().info(Level.ERROR + "Player not banned.");
+		} else {
+			Bukkit.getLogger().log(Level.WARNING, "Player not banned.");
 		}
+		return mute != null;
 	}
-	public static void unmute(String name){
+	public static boolean unmute(String name){
 		Mute mute = getBanManager().getMute(name);
 		if(mute != null){
 			getBanManager().unmute(name);
 		 } else {
-		   Bukkit.getLogger().info(Level.ERROR + "Player not banned.");
+		   Bukkit.getLogger().log(Level.WARNING, "Player not banned.");
 		}
+		return mute != null;
 	}
 	
 	public static void tempmute(String name, String reason, String banner, long expires){
@@ -81,11 +80,6 @@ public class CustomBansAPI {
 		getBanManager().setWhitelisted(name, white);
 	}
 	public static boolean isBanned(String name){
-		Ban ban = getBanManager().getBan(name);
-		if(ban != null){
-			return false;
-		} else {
-			return true;
-		}
+		return getBanManager().getBan(name) != null;
 	}
 }
