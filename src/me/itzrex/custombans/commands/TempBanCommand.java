@@ -19,8 +19,7 @@ import org.bukkit.entity.Player;
  */
 public class TempBanCommand implements CommandExecutor {
     public static String prefix = Msg.get("prefix");
-    public static File configFile2 = new File(CustomBans.getInstance().getDataFolder(), "limits.yml");
-    public static YamlConfiguration configuration2 = YamlConfiguration.loadConfiguration(configFile2);
+    public static File limitsFile = new File(CustomBans.getInstance().getDataFolder(), "limits.yml");
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         CommandSender p = sender;

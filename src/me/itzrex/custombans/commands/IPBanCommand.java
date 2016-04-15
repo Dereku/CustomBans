@@ -2,7 +2,6 @@ package me.itzrex.custombans.commands;
 
 import me.itzrex.custombans.CustomBans;
 import me.itzrex.custombans.Msg;
-import me.itzrex.custombans.managers.BanIP;
 import me.itzrex.custombans.util.Util;
 import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -36,14 +35,12 @@ public class IPBanCommand implements CommandExecutor {
                 p.sendMessage(Msg.get("prefix") + "§cНе введён ник.");
                 return true;
             }
-            ip = name;
             ip = CustomBans.getInstance().getBanManager().getIP(name);
             if(ip == null){
                 p.sendMessage(Msg.get("prefix") + "§cIP адрес игрока §6" + name + " §cне найден в базе данных");
                 return true;
             }
             if(!(sender instanceof Player)){
-                BanIP ipban = CustomBans.getInstance().getBanManager().getIPBan(ip);
                 CustomBans.getInstance().getBanManager().ipban(ip, reason, banner);
                 String message = Msg.get("prefix") +Msg.get("messages.ipbanned", new String[] {"admin", "ip", "reason"}, new String[]{banner, ip, reason});
                 CustomBans.getInstance().getBanManager().announce(message, silent, sender);
@@ -71,7 +68,6 @@ public class IPBanCommand implements CommandExecutor {
             	p.sendMessage(Msg.get("prefix") + "§4Ошибка: Ваш приоритет: §6" + playerPrior + "§c. §cПриоритет цели: §6" + targetPrior);
             	return true;
             }
-            BanIP ipban = CustomBans.getInstance().getBanManager().getIPBan(ip);
             CustomBans.getInstance().getBanManager().ipban(ip, reason, banner);
             String message = Msg.get("prefix") +Msg.get("messages.ipbanned", new String[] {"admin", "ip", "reason"}, new String[]{banner, ip, reason});
             CustomBans.getInstance().getBanManager().announce(message, silent, sender);

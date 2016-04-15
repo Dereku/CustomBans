@@ -1,10 +1,10 @@
 package me.itzrex.custombans.commands;
 
+import java.util.logging.Level;
 import me.itzrex.custombans.CustomBans;
 import me.itzrex.custombans.Msg;
 import me.itzrex.custombans.managers.Mute;
 import me.itzrex.custombans.util.Util;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -35,9 +35,9 @@ public class unMuteCommand implements CommandExecutor {
             }
             String admin = Util.getName(sender);
             CustomBans.getInstance().getBanManager().unmute(args[0]);
-            String message = Msg.get("prefix") + Msg.get("messages.unmuted", new String[] {"admin", "name"}, new String[] {admin, args[0]});
+            String message = Msg.get("prefix") + Msg.get("messages.unmuted", new String[] {"admin", "name"}, new String[] {admin, name});
             CustomBans.getInstance().getBanManager().announce(message, silent, sender);
-            Bukkit.getLogger().info("Player " + args[0] + " unmuted");
+            CustomBans.getInstance().getLogger().log(Level.INFO, "Player {0} unmuted", name);
             return true;
         }
         return true;

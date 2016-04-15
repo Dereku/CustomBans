@@ -9,8 +9,8 @@ import ru.tehkode.permissions.PermissionGroup;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.io.File;
+import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -47,7 +47,7 @@ public class BanCommand implements CommandExecutor {
                 }
                 CustomBans.getInstance().getBanManager().ban(name, reason, banner);
                 CustomBans.getInstance().getBanManager().announce(message, slient, sender);
-                Bukkit.getLogger().info("Player " + args[0] + " banned");
+                CustomBans.getInstance().getLogger().log(Level.INFO, "Player {0} banned", args[0]);
                 return true;
         	}
             if(CustomBans.getInstance().getBanManager().isWhitelisted(args[0])){
@@ -82,7 +82,7 @@ public class BanCommand implements CommandExecutor {
             }
             CustomBans.getInstance().getBanManager().ban(name, reason, banner);
             CustomBans.getInstance().getBanManager().announce(message, slient, sender);
-            Bukkit.getLogger().info("Player " + args[0] + " banned");
+            CustomBans.getInstance().getLogger().log(Level.INFO, "Player {0} banned", args[0]);
             return true;
         }
         return true;

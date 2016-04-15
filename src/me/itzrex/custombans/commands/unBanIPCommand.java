@@ -2,7 +2,6 @@ package me.itzrex.custombans.commands;
 
 import me.itzrex.custombans.CustomBans;
 import me.itzrex.custombans.Msg;
-import me.itzrex.custombans.managers.Ban;
 import me.itzrex.custombans.managers.BanIP;
 import me.itzrex.custombans.util.Util;
 import org.bukkit.command.Command;
@@ -42,16 +41,14 @@ public class unBanIPCommand implements CommandExecutor {
             } else {
                 name = CustomBans.getInstance().getBanManager().match(name, true);
                 String ip = CustomBans.getInstance().getBanManager().getIP(name);
-                Ban ban = CustomBans.getInstance().getBanManager().getBan(name);
                 BanIP banip = CustomBans.getInstance().getBanManager().getIPBan(ip);
                 if(banip == null){
                     p.sendMessage(Msg.get("prefix") + "§cИгрок не был забанен.");
                     return true;
                 }
-                if(banip != null){
+                
+                CustomBans.getInstance().getBanManager().unbanip(ip);
 
-                    CustomBans.getInstance().getBanManager().unbanip(ip);
-                }
                 String msg = Msg.get("prefix") + Msg.get("messages.unbannedip", new String[]{"admin", "name"}, new String[]{banner, name});
                 CustomBans.getInstance().getBanManager().announce(msg, silent, sender);
             }

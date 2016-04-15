@@ -1,10 +1,10 @@
 package me.itzrex.custombans.commands;
 
+import java.util.logging.Level;
 import me.itzrex.custombans.CustomBans;
 import me.itzrex.custombans.Msg;
 import me.itzrex.custombans.managers.Ban;
 import me.itzrex.custombans.util.Util;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -35,7 +35,7 @@ public class unBanCommand implements CommandExecutor {
             CustomBans.getInstance().getBanManager().unban(args[0]);
             String message = Msg.get("prefix") + Msg.get("messages.unbanned", new String[] {"admin", "unbanned"}, new String[] {Util.getName(sender), args[0]});
             CustomBans.getInstance().getBanManager().announce(message, silent, sender);
-            Bukkit.getLogger().info("Player " + args[0] + " unbanned.");
+            CustomBans.getInstance().getLogger().log(Level.INFO, "Player {0} unbanned.", args[0]);
             return true;
         }
         return true;
