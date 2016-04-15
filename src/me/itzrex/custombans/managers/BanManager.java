@@ -359,13 +359,13 @@ public class BanManager {
         Ban ban = new Ban(name, reason, banner, System.currentTimeMillis());
         this.bans.put(name, ban);
 
-        db.execute("INSERT INTO bans (name, reason, banner, time) VALUES (?, ?, ?, ?)", name, reason, banner, System.currentTimeMillis());
+        db.execute("INSERT INTO bans ('name', 'reason', 'banner', 'time') VALUES ('?', '?', '?', '?')", name, reason, banner, System.currentTimeMillis());
         kick(name, ban.getKickMessage());
     }
     public void kick(final String user, final String msg){
         Runnable r = () -> {
             Player p = Bukkit.getPlayerExact(user);
-            if(p != null && p.isOnline() && isWhitelisted(user) == false){
+            if(p != null && p.isOnline()){
                 p.kickPlayer(msg);
             }
         };

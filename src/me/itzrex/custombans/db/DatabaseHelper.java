@@ -42,7 +42,7 @@ public class DatabaseHelper{
         }
     }
     public static void createBanTable(Database db){
-        String query = "CREATE TABLE bans ( name  TEXT(30) NOT NULL, reason  TEXT(100), banner  TEXT(30), time  BIGINT NOT NULL DEFAULT 0, expires  BIGINT NOT NULL DEFAULT 0 );";
+        String query = "CREATE TABLE bans ( name  TEXT(30) NOT NULL, reason  TEXT(100) NOT NULL, banner  TEXT(30) NOT NULL, time  BIGINT NOT NULL DEFAULT 0, expires  BIGINT NOT NULL DEFAULT 0 );";
         try {
             Statement st = db.getConnection().createStatement();
             st.execute(query);
@@ -52,7 +52,7 @@ public class DatabaseHelper{
         }
     }
     public static void createIPBanTable(Database db){
-        String query = "CREATE TABLE ipbans ( ip  TEXT(20) NOT NULL, reason  TEXT(100), banner  TEXT(30), time  BIGINT NOT NULL DEFAULT 0, expires  BIGINT NOT NULL DEFAULT 0 );";
+        String query = "CREATE TABLE ipbans ( ip  TEXT(20) NOT NULL, reason  TEXT(100) NOT NULL, banner  TEXT(30) NOT NULL, time  BIGINT NOT NULL DEFAULT 0, expires  BIGINT NOT NULL DEFAULT 0 );";
         try {
             Statement st = db.getConnection().createStatement();
             st.execute(query);

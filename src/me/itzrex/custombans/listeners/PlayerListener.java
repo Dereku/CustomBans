@@ -28,9 +28,6 @@ public class PlayerListener implements Listener {
         } else {
             CustomBans.getInstance().getBanManager().setWhitelisted(p.getName().toLowerCase(), false);
         }
-        if(CustomBans.getInstance().getBanManager().isWhitelisted(p.getName().toLowerCase())){
-            return;
-        }
         String address = CustomBans.getInstance().getBanManager().getIP(p.getName());
         BanIP banip = CustomBans.getInstance().getBanManager().getIPBan(address);
         if(banip != null){
