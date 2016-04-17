@@ -38,7 +38,7 @@ public class BanManager {
 
     public BanManager(CustomBans plugin){
         this.plugin = plugin;
-        this.db = plugin.getDb();
+        this.db = plugin.getBansDatabase();
         reload();
     }
     public HashMap<String, Ban> getBans(){
@@ -51,7 +51,7 @@ public class BanManager {
         return this.whitelist;
     }
     public final void reload(){
-        this.db = plugin.getDb();
+        this.db = plugin.getBansDatabase();
         db.getCore().flush();
         this.bans.clear();
         this.mutes.clear();

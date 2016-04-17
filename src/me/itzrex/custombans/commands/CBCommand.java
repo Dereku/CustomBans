@@ -37,7 +37,7 @@ public class CBCommand implements CommandExecutor {
                     return true;
                 }
                 Msg.reload();
-                CustomBans.getInstance().reload();
+                CustomBans.getInstance().loadLimits();
                 CustomBans.getInstance().reloadConfig();
                 CustomBans.getInstance().getBanManager().reload();
                 p.sendMessage(prefix + "Конфиг, база данных, лимиты - перезагружены.");

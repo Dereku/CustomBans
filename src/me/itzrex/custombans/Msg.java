@@ -1,88 +1,62 @@
 package me.itzrex.custombans;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.logging.Level;
+import org.apache.commons.io.FileUtils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class Msg{
-    private static YamlConfiguration cfg;
+public class Msg {
 
-    public static void reload(){
-        File f = new File(CustomBans.getInstance().getDataFolder(), "messages.yml");
-        cfg = new YamlConfiguration();
-        try{
-            YamlConfiguration defaults = new YamlConfiguration();
-            InputStream in = CustomBans.getInstance().getResource("messages.yml");
-            defaults.load(in);
-            in.close();
+    private static final YamlConfiguration messages = new YamlConfiguration();
+    private static final File messagesFile = new File(CustomBans.getInstance().getDataFolder(), "messages.yml");
 
-            if(f.exists()){
-                cfg.load(f); //If the existing message file exists, load it as well.
-            }
-            else{
-                //Save the file to disk if the messages.yml file doesn't exist yet.
-                FileOutputStream out = new FileOutputStream(f);
-                in = CustomBans.getInstance().getResource("messages.yml");
-                byte[] buffer = new byte[1024];
-                int len = in.read(buffer);
-                while (len != -1) {
-                    out.write(buffer, 0, len);
-                    len = in.read(buffer);
-                }
-                in.close();
-                out.close();
-            }
-            cfg.setDefaults(defaults);
-        } catch(FileNotFoundException e){
-            e.printStackTrace();
-        } catch(InvalidConfigurationException e){
-            e.printStackTrace();
-            System.out.println("Invalid messages.yml config. Using defaults.");
+    public static void reload() {
+        if (!messagesFile.exists()) {
             try {
-                cfg.load(CustomBans.getInstance().getResource("messages.yml"));
-            } catch (Exception ex){
-                ex.printStackTrace();
+                FileUtils.copyInputStreamToFile(CustomBans.getInstance().getResource("messages.yml"), messagesFile);
+            } catch (IOException ex) {
+                CustomBans.getInstance().getLogger().log(Level.WARNING, "Failed to save messages.yml file.", ex);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        
+        try {
+            messages.load(messagesFile);
+        } catch (IOException | InvalidConfigurationException ex) {
+            CustomBans.getInstance().getLogger().log(Level.WARNING, "Failed to load messages.yml", ex);
+            try {
+                messages.load(CustomBans.getInstance().getResource("messages.yml"));
+            } catch (IOException | InvalidConfigurationException ex1) {
+                CustomBans.getInstance().getLogger().log(Level.WARNING, "Failed to load default messages. Larry, what the hell?", ex1);
+            }
         }
     }
 
-    public static String get(String loc, String[] keys, String[] values){
-        String msg = cfg.getString(loc);
+    public static String get(String loc, String[] keys, String[] values) {
+        String msg = messages.getString(loc);
 
-        if(msg == null || msg.isEmpty()){
-            return "Unknown message in config: " + loc;
+        if (msg == null || msg.isEmpty()) {
+            return "Unknown message key: " + loc;
         }
 
-        if(keys != null && values != null){
-            if(keys.length != values.length){ //Dirty, but we don't want to break a ban or something.
-                try{
-                    throw new IllegalArgumentException("Invalid message request. keys.length should equal values.length!");
-                }
-                catch(IllegalArgumentException e){
-                    e.printStackTrace();
-                }
+        if (keys != null && values != null) {
+            if (keys.length != values.length) { //Dirty, but we don't want to break a ban or something.
+                throw new IllegalArgumentException("Invalid message request. keys.length should equal values.length!");
             }
 
-            for(int i = 0; i < keys.length; i++){
-                msg = msg.replace("{"+keys[i]+"}", values[i]); //I could do case insensitive, but nty.
+            for (int i = 0; i < keys.length; i++) {
+                msg = msg.replace("{" + keys[i] + "}", values[i]); //I could do case insensitive, but nty.
             }
         }
 
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
-    public static String get(String loc){
-        return get(loc, (String[])null, (String[])null);
-    }
-    public static String get(String loc, String key, String value){
-        return get(loc, new String[]{key}, new String[]{value});
+
+    public static String get(String loc) {
+        return get(loc, null, null);
     }
 
 }

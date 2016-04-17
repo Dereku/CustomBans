@@ -73,7 +73,7 @@ public class CustomBansAPI {
 	public static void reloadPlugin(){
 		getBanManager().reload();
 		Msg.reload();
-		getPlugin().reload();
+		getPlugin().loadLimits();
 	}
 	
 	public static void setWhitelisted(String name, boolean white){

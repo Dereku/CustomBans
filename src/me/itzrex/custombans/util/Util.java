@@ -223,7 +223,7 @@ public class Util{
         s = s.replaceAll("\\\\n", "\n");
 
         if(s.isEmpty()){
-            return CustomBans.getInstance().defaultreason;
+            return CustomBans.defaultreason;
         }
 
         return ChatColor.translateAlternateColorCodes('&', s);

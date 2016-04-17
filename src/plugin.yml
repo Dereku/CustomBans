@@ -3,15 +3,15 @@ version: 1.1
 author: [itzRex]
 main: me.itzrex.custombans.CustomBans
 commands:
-  custombans:
-    aliases: [cbans, cb]
-  ban:
-  unban:
-  kick:
-  mute:
-  unmute:
-  tempban:
-  tempmute:
-  banip:
-  unbanip:
-  baninfo:
+    custombans:
+        aliases: [cbans, cb]
+    ban:
+    unban:
+    kick:
+    mute:
+    unmute:
+    tempban:
+    tempmute:
+    banip:
+    unbanip:
+    baninfo:

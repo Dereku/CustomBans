@@ -13,44 +13,42 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.logging.Level;
+import org.apache.commons.io.FileUtils;
+import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  * Класс создан itzRex. Дата: 06.04.2016.
  */
 public class CustomBans extends JavaPlugin {
-    //TODO: Изменить все e.printStackTrace(); на this.getLogger().log(Level.WARNING, "Сообщение ошибки", e);
 
-    public static CustomBans instance;
-    public static CustomBans getInstance(){
+    public static String defaultreason = "Не указана";
+    private static CustomBans instance;
+
+    public static CustomBans getInstance() {
         return instance;
     }
-    public static String defaultreason = "Не указана";
-    public boolean isMySQL;
-    public Database db;
+
+    private final YamlConfiguration limitYaml = new YamlConfiguration();
+    private Database db;
     private BanManager manager;
-    public static File messageFile;
-    public File limitFile;
-    public YamlConfiguration limitYaml;
-    public static FileConfiguration messageConfig;
+    private File limitFile;
+
     @Override
     public void onEnable() {
-        instance = this;
-        saveDefaultConfig();
-        DatabaseCore dCore;
+        instance = this; //TODO: Избавиться от этого
+        this.saveDefaultConfig();
+        this.limitFile = new File(this.getDataFolder(), "limits.yml");
         ConfigurationSection sec = getConfig().getConfigurationSection("mysql");
-        isMySQL = getConfig().getBoolean("mysql.enable");
-        if(isMySQL){
+        DatabaseCore dCore;
+        if (this.getConfig().getBoolean("mysql.enable")) {
             this.getLogger().info("Using MySQL...");
             String host = sec.getString("host");
             String user = sec.getString("user");
@@ -64,9 +62,10 @@ public class CustomBans extends JavaPlugin {
         }
         try {
             this.db = new Database(dCore);
-        } catch(Database.ConnectionException e){
+        } catch (Database.ConnectionException e) {
             this.getLogger().info("Failed connection to database. Disabling CustomBans :(");
             Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
         try {
             new MetricsLite(this).start();
@@ -74,7 +73,7 @@ public class CustomBans extends JavaPlugin {
             // Metrics failed.
         }
         Msg.reload();
-        manager = new BanManager(this);
+        this.manager = new BanManager(this);
         getCommand("custombans").setExecutor(new CBCommand());
         getCommand("ban").setExecutor(new BanCommand());
         getCommand("unban").setExecutor(new unBanCommand());
@@ -87,62 +86,47 @@ public class CustomBans extends JavaPlugin {
         getCommand("unbanip").setExecutor(new unBanIPCommand());
         getCommand("baninfo").setExecutor(new BanInfoCommand());
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        reload();
+        loadLimits();
     }
-    
-    public PermissionGroup getGroup(Player player)
-    {
-      PermissionGroup[] groups = PermissionsEx.getUser(player).getGroups();
-      if (groups.length == 0) {
-        return (PermissionGroup)PermissionsEx.getPermissionManager().getDefaultGroups(player.getLocation().getWorld().getName()).get(0);
-      }
-      return groups[0];
-    }
-        
-    public void reload(){
-        File f = new File(CustomBans.getInstance().getDataFolder(), "limits.yml");
-        YamlConfiguration cfg = new YamlConfiguration();
-        try{
-            YamlConfiguration defaults = new YamlConfiguration();
-            InputStream in = CustomBans.getInstance().getResource("limits.yml");
-            defaults.load(in);
-            in.close();
 
-            if(f.exists()){
-                cfg.load(f); //If the existing message file exists, load it as well.
-            }
-            else{
-                //Save the file to disk if the messages.yml file doesn't exist yet.
-                FileOutputStream out = new FileOutputStream(f);
-                in = CustomBans.getInstance().getResource("limits.yml");
-                byte[] buffer = new byte[1024];
-                int len = in.read(buffer);
-                while (len != -1) {
-                    out.write(buffer, 0, len);
-                    len = in.read(buffer);
-                }
-                in.close();
-                out.close();
-            }
-            cfg.setDefaults(defaults);
-        } catch(FileNotFoundException e){
-            e.printStackTrace();
-        } catch(InvalidConfigurationException e){
-            e.printStackTrace();
-            System.out.println("Invalid messages.yml config. Using defaults.");
+    public PermissionGroup getGroup(Player player) {
+        PermissionGroup[] groups = PermissionsEx.getUser(player).getGroups();
+        if (groups.length == 0) {
+            return PermissionsEx.getPermissionManager().getDefaultGroups(player.getLocation().getWorld().getName()).get(0);
+        }
+        return groups[0];
+    }
+
+    public void loadLimits() {
+        if (!this.limitFile.exists()) {
             try {
-                cfg.load(CustomBans.getInstance().getResource("limits.yml"));
-            } catch (Exception ex){
-                ex.printStackTrace();
+                FileUtils.copyInputStreamToFile(this.getResource("limits.yml"), this.limitFile);
+            } catch (IOException ex) {
+                this.getLogger().log(Level.WARNING, "Failed to save limits.yml file", ex);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+
+        try {
+            this.limitYaml.load(this.limitFile);
+        } catch (IOException | InvalidConfigurationException ex) {
+            this.getLogger().log(Level.WARNING, "Failed to load limits.yml", ex);
+            try {
+                this.limitYaml.load(this.getResource("limits.yml"));
+            } catch (IOException | InvalidConfigurationException ex1) {
+                this.getLogger().log(Level.WARNING, "Failed to load default limits. Larry, what the hell?", ex1);
+            }
         }
     }
-    public Database getDb(){
+
+    public FileConfiguration getLimits() {
+        return this.limitYaml;
+    }
+
+    public Database getBansDatabase() {
         return db;
     }
-    public BanManager getBanManager(){
+
+    public BanManager getBanManager() {
         return manager;
     }
 }
