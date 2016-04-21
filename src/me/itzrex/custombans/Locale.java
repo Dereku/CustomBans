@@ -13,7 +13,7 @@ import org.bukkit.ChatColor;
  * Класс локалей плагина CustomBans
  *
  * @version 1.0
- * @since 1.2
+ * @since 1.5
  * @author Dereku
  */
 public final class Locale {

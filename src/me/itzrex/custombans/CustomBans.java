@@ -139,6 +139,10 @@ public class CustomBans extends JavaPlugin {
         }
         this.locale = new Locale(this, file);
     }
+    
+    public Locale getLocale() {
+        return this.locale;
+    }
 
     public FileConfiguration getLimits() {
         return this.limitYaml;
