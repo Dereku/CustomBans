@@ -5,3 +5,6 @@ mysql:
    pass: ''
    name: 'test'
    port: 3306
+language:
+    prefix: "&7[&bCustomBans&7] &b"
+    locale: ru_RU

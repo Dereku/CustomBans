@@ -20,6 +20,7 @@ import org.mcstats.MetricsLite;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,6 +38,7 @@ public class CustomBans extends JavaPlugin {
     }
 
     private final YamlConfiguration limitYaml = new YamlConfiguration();
+    private Locale locale;
     private Database db;
     private BanManager manager;
     private File limitFile;
@@ -116,6 +118,26 @@ public class CustomBans extends JavaPlugin {
                 this.getLogger().log(Level.WARNING, "Failed to load default limits. Larry, what the hell?", ex1);
             }
         }
+    }
+    
+    public void setupLocale() {
+        String loc = this.getConfig().getString("language.locale", "en_US");
+        File file = new File(this.getDataFolder(), loc + ".properties");
+        
+        if (!file.exists()) {
+            InputStream is = this.getResource(loc + ".properties");
+            if (is == null) {
+                is = this.getResource("ru_RU.properties");
+            }
+            
+            try {
+                FileUtils.copyInputStreamToFile(is, file);
+                is.close();
+            } catch (IOException ex) {
+                this.getLogger().log(Level.WARNING, "Failed to copy \"" + file.getName() + "\" to data folder.", ex);
+            }
+        }
+        this.locale = new Locale(this, file);
     }
 
     public FileConfiguration getLimits() {

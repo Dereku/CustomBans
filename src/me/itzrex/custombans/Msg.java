@@ -9,11 +9,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * 
+ * @author itzRex
+ * @deprecated
+ */
+@Deprecated
 public class Msg {
 
     private static final YamlConfiguration messages = new YamlConfiguration();
     private static final File messagesFile = new File(CustomBans.getInstance().getDataFolder(), "messages.yml");
 
+    @Deprecated
     public static void reload() {
         if (!messagesFile.exists()) {
             try {
@@ -35,6 +42,7 @@ public class Msg {
         }
     }
 
+    @Deprecated
     public static String get(String loc, String[] keys, String[] values) {
         String msg = messages.getString(loc);
 
@@ -55,6 +63,7 @@ public class Msg {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
+    @Deprecated
     public static String get(String loc) {
         return get(loc, null, null);
     }
